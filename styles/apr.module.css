@@ -1,0 +1,20 @@
+.state_apr {
+    color: black;
+    display: flex;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.state_cancel {
+  color: red;
+  display: flex;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.state_new{
+  color: blue;
+  display: flex;
+  text-align: center;
+  font-weight: bolder;
+}

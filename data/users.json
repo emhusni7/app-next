@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "username": "admin",
+        "password": "saya",
+        "state": [null, "to_approve", "approved"],
+        "so_state": [
+            "", 
+            "publish",
+            "done"
+        ]
+    },
+    {
+        "id": 2,
+        "username": "adi",
+        "password": "saya",
+        "state": [
+            "to_approve",
+            "approved"
+        ]
+    }
+]

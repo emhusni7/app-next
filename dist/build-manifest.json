@@ -1,0 +1,35 @@
+{
+  "polyfillFiles": [
+    "static/chunks/polyfills.js"
+  ],
+  "devFiles": [
+    "react-refresh.js"
+  ],
+  "ampDevFiles": [
+    "webpack.js",
+    "amp.js"
+  ],
+  "lowPriorityFiles": [
+    "static/development/_buildManifest.js",
+    "static/development/_ssgManifest.js",
+    "static/development/_middlewareManifest.js"
+  ],
+  "pages": {
+    "/_app": [
+      "webpack.js",
+      "main.js",
+      "pages/_app.js"
+    ],
+    "/_error": [
+      "webpack.js",
+      "main.js",
+      "pages/_error.js"
+    ],
+    "/viewerPdf": [
+      "webpack.js",
+      "main.js",
+      "pages/viewerPdf.js"
+    ]
+  },
+  "ampFirstPages": []
+}
