@@ -1,8 +1,12 @@
 [
     {
         "id": 1,
-        "username": "admin",
+        "username": "it",
         "password": "saya",
+        "menu": [
+            {"name": "sales", "label": "Sales Contract"},
+            {"name": "poApp", "label": "Purchase Approval"}
+    ],
         "state": [null, "to_approve", "approved"],
         "so_state": [
             "", 
@@ -14,9 +18,11 @@
         "id": 2,
         "username": "adi",
         "password": "saya",
+        "menu": [{"name": "sales", "label": "Sales Contract"}],
         "state": [
             "to_approve",
             "approved"
-        ]
+        ],
+        "so_state": ["publish","done"]
     }
 ]

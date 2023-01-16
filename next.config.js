@@ -1,10 +1,4 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
-const cMapsDir = path.join(path.dirname(require.resolve('pdfjs-dist/package.json')), 'cmaps');
-const standardFontsDir = path.join(
-  path.dirname(require.resolve('pdfjs-dist/package.json')),
-  'standard_fonts',
-);
 
 module.exports = {
   webpack5: true,
@@ -34,8 +28,8 @@ module.exports = {
     });
      return config;
  },
-  reactStrictMode: true,
-  images: {
-    domains: ['reqres.in'],
-  },
+  // reactStrictMode: true,
+  // images: {
+  //   domains: ['reqres.in'],
+  // },
 }

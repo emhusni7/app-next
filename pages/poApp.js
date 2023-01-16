@@ -22,9 +22,10 @@ import {
   import LocalPrintshopRoundedIcon from '@mui/icons-material/LocalPrintshopRounded';
   import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
   import { useAppContext } from '../src/models/withAuthorization';
+  import ViewPdf from './viewerPdf';
 
 
-  export default function getApprovalPO({page, total}){
+ function GridPO({page, total}){
     
     const [tbpage, setPage] = useState(page);
     const [rowpages, setRowPage] = useState(10);
@@ -138,6 +139,12 @@ import {
             value={props.searchText}
             style={{ width: '75%'}}
             onChange={(e) => {
+              if (!e.target.value){
+                setApp(null);
+                setDate(null);
+                setPage(0);
+                props.onClick('');
+              }
               props.onSearch(e.target.value);
             }}/>
             <Button >
@@ -147,15 +154,6 @@ import {
           </div>
           )
     }
-    
-    const columnStyleWithWidth = {
-        top: "0px",
-        left: "0px",
-        zIndex: "100",
-        position: "sticky",
-        backgroundColor: "#fff",
-        width: "300px"
-     }
 
      const columns = [
         {
@@ -437,6 +435,25 @@ import {
           
       </Box> )
   }
+
+export default function POForm(props){
+  const [print, setPrint] = useState(false);
+  const [id, setId] = useState("");
+  const printPO = (newId) => {
+    setPrint(true);
+    setId(newId);
+  }
+  const backMenu = () => {
+    setId("");
+    setPrint(false);
+  }
+
+  if (!print){
+    return (<GridPO page={props.page} total={props.total} onprint={printPO}></GridPO>)
+  } else{
+    return (<ViewPdf id={id} report_type="po_approval" onBack={backMenu} />)
+  }
+}
 
 export async function getServerSideProps(){
     return { props: { 

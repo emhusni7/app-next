@@ -1,1 +1,0 @@
-self.__BUILD_MANIFEST = {__rewrites:{beforeFiles:[],afterFiles:[],fallback:[]},"/_error":["pages\u002F_error.js"],"/viewerPdf":["pages\u002FviewerPdf.js"],sortedPages:["\u002F_app","\u002F_error","\u002FviewerPdf"]};self.__BUILD_MANIFEST_CB && self.__BUILD_MANIFEST_CB()

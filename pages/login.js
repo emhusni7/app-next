@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { TextField, Button, Paper, Grid, Avatar } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockClockOutlined";
-
+import {CustomizedProgressBars} from '../src/components/Layout/loader';
 
 
 const validationSchema = yup.object({
@@ -32,17 +32,16 @@ const styles = {
     }
 }
 
-function LoginForm({ csrfToken }) {
+function LoginForm() {
   const router = useRouter();
-
   const formik = useFormik({
       initialValues: {
-        username: 'foobar@example.com',
-        password: 'foobar12',
+        username: '',
+        password: '',
       },
       validationSchema: validationSchema,
-      onSubmit: async (values, { setSubmitting }) => {
-        
+      onSubmit: async (values, { setSubmitting, setErrors}) => {
+        setSubmitting(true);
         const params = {
           username: values.username,
           password: values.password,
@@ -56,10 +55,14 @@ function LoginForm({ csrfToken }) {
           body: JSON.stringify(params),
         });
         const response = await res.json();
-        
+        setSubmitting(false)
         if (res.status === 200){
-          localStorage.setItem("user", JSON.stringify(response));
+          const data = JSON.stringify(response)
+          localStorage.setItem("user", data);
+          localStorage.setItem("menu", JSON.stringify(response.menu))
           router.push('/');
+        } else{
+          setErrors({'password': response.message, 'username': ''})
         }
         
       },
@@ -75,12 +78,13 @@ function LoginForm({ csrfToken }) {
               <Avatar style={avatarStyle}><LockOutlinedIcon/></Avatar>
               <h2>Sign In</h2>
           </Grid>
-        <form onSubmit={formik.handleSubmit}>
-          <input name="csrfToken" type="hidden" />
+        <form onSubmit={formik.handleSubmit
+        }>
           <TextField
             fullWidth
             id="username"
             name="username"
+            variant="outlined"
             style={{ margin: "0px 0px 10px"}}
             label="Username"
             value={formik.values.username}
@@ -101,9 +105,11 @@ function LoginForm({ csrfToken }) {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
+          <div>{formik.isSubmitting ? (<CustomizedProgressBars />) : ("")}</div>
           <Button color="primary" variant="contained" fullWidth type="submit">
             Login
           </Button>
+          {/* <NotificationContainer /> */}
         </form>          
         </Paper>
       </Grid>

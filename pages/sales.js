@@ -16,6 +16,8 @@ import {
   import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
   import DoneIcon from '@mui/icons-material/Done';
   import ViewPdf from './viewerPdf';
+  import {NotificationContainer, NotificationManager} from 'react-notifications';
+  import { createNotification } from "../src/components/Fields/notification";
 
 
   function GridSale({page, total, onprint}){
@@ -83,7 +85,9 @@ import {
         }
         items[rowIndex] = item;
         setData(items);
-      }
+        createNotification('success','Success', 'Success');
+      } 
+      
   });
 }
 
@@ -297,7 +301,7 @@ import {
             options={options} 
             />
           </LocalizationProvider>
-          
+          <NotificationContainer />
       </Box> )
   }
 
