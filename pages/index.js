@@ -7,26 +7,28 @@ import Button from '@mui/material/Button';
 import styles from '../styles/Home.module.css';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import {CustomizedProgressBars} from '../src/components/Layout/loader';
 
 
 export default function Index() {
     const router = useRouter()
+    const [loading, setLoading] = useState(false);
     const [menus, setMenu] = useState([]);
     useEffect(() => {
         const access = eval(localStorage.getItem('menu'));
         setMenu(access);
-        () => {
-            
-        }
+        () => {}
     }, [])
 
     const pageRoute = (page) => {
+        setLoading(true);
         router.push(`/${page}`);
     }
     
     return (
         <section>
             <Grid justifyContent="center" alignItems="center" container spacing={2} minHeight={160}>
+                {loading ? (<CustomizedProgressBars ></CustomizedProgressBars>): ''}
                 {menus.map((value, index) =>                         (<Card className={styles.card} sx={{ maxWidth: 85 }}>
                             <CardMedia
                                 component="img"

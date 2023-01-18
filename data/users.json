@@ -4,8 +4,8 @@
         "username": "it",
         "password": "saya",
         "menu": [
-            {"name": "sales", "label": "Sales Contract"},
-            {"name": "poApp", "label": "Purchase Approval"}
+            {"name": "sales", "label": "SO   Contract"},
+            {"name": "poApp", "label": "PO Approval"}
     ],
         "state": [null, "to_approve", "approved"],
         "so_state": [

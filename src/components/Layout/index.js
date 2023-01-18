@@ -59,6 +59,7 @@ const Footer = () => {
 function Layout({children}){
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [username, setUsername ]= React.useState("");
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -66,6 +67,10 @@ function Layout({children}){
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  React.useEffect(() => {
+    setUsername(JSON.parse(localStorage.getItem('user')).username.substring(0,1))
+  },[username])
 
   return (
   <div> 
@@ -85,7 +90,7 @@ function Layout({children}){
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>{username.toUpperCase()}</Avatar>
           </IconButton>
         </Tooltip>
         <Menu
@@ -134,29 +139,7 @@ function Layout({children}){
         </MenuItem>
         <Divider />
         </Menu>
-        {/*<MenuItem>
-          <Avatar /> My account
-        </MenuItem>
         
-        <MenuItem>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu> */}
       </Toolbar>
     </AppBar>
       {children}

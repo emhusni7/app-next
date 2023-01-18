@@ -25,7 +25,7 @@ import {
   import ViewPdf from './viewerPdf';
 
 
- function GridPO({page, total}){
+ function GridPO({page, total, onprint}){
     
     const [tbpage, setPage] = useState(page);
     const [rowpages, setRowPage] = useState(10);
@@ -252,7 +252,7 @@ import {
                         }}>
                         </CheckOutlinedIcon>
                       </Button>
-                      <Button>
+                      <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
                         <LocalPrintshopRoundedIcon sx={{'color': 'black'}}></LocalPrintshopRoundedIcon>
                       </Button>
                       </div>
@@ -266,7 +266,7 @@ import {
                             }}>
                             </CancelOutlinedIcon>
                           </Button>
-                          <Button>
+                          <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
                             <LocalPrintshopRoundedIcon sx={{'color': 'black'}} ></LocalPrintshopRoundedIcon>
                           </Button>
                         </div>
@@ -275,7 +275,7 @@ import {
                       return (
                       <div>
                         
-                        <Button>
+                        <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
                           <LocalPrintshopRoundedIcon sx={{'color': 'black'}} ></LocalPrintshopRoundedIcon>
                         </Button>
                       </div>)
@@ -296,7 +296,7 @@ import {
                         }}>
                         </CancelOutlinedIcon>
                       </Button>
-                      <Button>
+                      <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
                         <LocalPrintshopRoundedIcon sx={{'color': 'black'}} ></LocalPrintshopRoundedIcon>
                       </Button>
                     </div>)
@@ -307,7 +307,7 @@ import {
                     }}>
                     </CancelOutlinedIcon>
                   </Button>
-                  <Button>
+                  <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
                     <LocalPrintshopRoundedIcon sx={{'color': 'black'}} ></LocalPrintshopRoundedIcon>
                   </Button></div>)
                   }

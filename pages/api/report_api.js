@@ -3,9 +3,11 @@ import { useEffect } from "react";
 export default async (req,res) => {
     try {
         if (req.body.report_type == 'sales_contract'){
-            const result = await getSalesContractReport(req.body.id);
+            const result = await getReport(req.body.id, 'so_contract');
             return res.status(200).json(result);
-        } 
+        } else if ( req.body.report_type == ""){
+
+        }
         
         
     } catch (error) {
@@ -14,11 +16,11 @@ export default async (req,res) => {
 }
 
 
-const getSalesContractReport = async (id) => {
+const getReport = async (id, report_name) => {
     
     const username = process.env.J_USERNAME
     const password = process.env.J_PASSWORD
-    const url = process.env.JASPER_SERVER_URL+`so_contract.pdf?id=${id}`
+    const url = process.env.JASPER_SERVER_URL+`${report_name}.pdf?id=${id}`
     const auth1 =  'Basic ' + Buffer.from(username + ":" + password).toString('base64');
     
     let result = await fetch(url,{
