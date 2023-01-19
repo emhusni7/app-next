@@ -10,8 +10,7 @@ export default async (req,res) => {
             result = await setStatus(req.body.id, req.body.from_state, req.body.to_state)
         }
         return res.status(200).json(result);
-    } catch (error) {
-        console.log(error);
+    } catch (error) {   
         return res.status(405).json({error}).end();
     } 
 }

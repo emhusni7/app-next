@@ -39,7 +39,7 @@ function getModelNumber(model){
 
 function setNumber(model, year, month) {
     const [number, setNumber] = React.useState(dataSeq);
-    console.log(number);
+    
     // let checked = false;
     // for (mdl in model){
     //     for (x in mdl.datas){

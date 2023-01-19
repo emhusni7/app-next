@@ -14,14 +14,12 @@ import {
   import { useAppContext } from '../src/models/withAuthorization';
   import PublishIcon from '@mui/icons-material/Publish';
   import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-  import DoneIcon from '@mui/icons-material/Done';
+  import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
   import ViewPdf from './viewerPdf';
-  import {NotificationContainer, NotificationManager} from 'react-notifications';
-  import { createNotification } from "../src/components/Fields/notification";
+  
 
-
-  function GridSale({page, total, onprint}){
-    
+  function GridSale({page, total, onprint, onMsg}){
+    console.log(onMsg);
     const [tbpage, setPage] = useState(page);
     const [rowpages, setRowPage] = useState(total);
     const [loading, setLoading] = useState(false);
@@ -85,8 +83,10 @@ import {
         }
         items[rowIndex] = item;
         setData(items);
-        createNotification('success','Success', 'Success');
-      } 
+        onMsg('success','Success', 'Success');
+      } else{
+        onMsg('error','Error','Error');
+      }
       
   });
 }
@@ -182,28 +182,41 @@ import {
             sort: false,
             setCellHeaderProps: () => ({ align: 'center' }),
             customBodyRender: (value, tableMeta, updateState) => {
-              let from_state, to_state = "";
-              if(value == "publish"){
-                from_state = "publish";
-                to_state = "done";
-              } else{
-                from_state = "";
-                to_state = "publish";
+              if (userObj.so_approval_akses){
+                let from_state, to_state = "";
+                if(value == "publish"){
+                  from_state = "publish";
+                  to_state = "done";
+                } else{
+                  from_state = "";
+                  to_state = "publish";
+                }
+                if ( userObj.so_approval_akses.to_publish && (!value || value == 'cancel')){
+                  return (
+                    <Button label="Publish" onClick={(e) => updateStatus(tableMeta.rowIndex ,tableMeta.tableData[tableMeta.rowIndex].okl, from_state, to_state, updateState)}>
+                      <PublishIcon label="Publish"></PublishIcon>
+                    </Button>)
+                } else if(userObj.so_approval_akses.to_done && value == "publish") {
+                  return (
+                    <Button label="Done" onClick={(e) => updateStatus(tableMeta.rowIndex ,tableMeta.tableData[tableMeta.rowIndex].okl, from_state, to_state, updateState)}>
+                      <PublishedWithChangesIcon label="Done"></PublishedWithChangesIcon>
+                    </Button>)
+                }
+
+                if (userObj.so_approval_akses.to_cancel_publish && value == "publish"){
+                  return (<Button sx={{'color':'red'}} label="Cancel" onClick={(e) => updateStatus(tableMeta.rowIndex ,tableMeta.tableData[tableMeta.rowIndex].okl, 'publish', 'cancel', updateState)}>
+                        <CancelOutlinedIcon label="Cancel"></CancelOutlinedIcon>
+                      </Button>)
+                }
+
+                if (userObj.so_approval_akses.to_cancel_done && value == "done"){
+                  return (<Button sx={{'color':'red'}} label="Cancel" onClick={(e) => updateStatus(tableMeta.rowIndex ,tableMeta.tableData[tableMeta.rowIndex].okl, 'done', 'cancel', updateState)}>
+                            <CancelOutlinedIcon label="Cancel"></CancelOutlinedIcon>
+                        </Button>)
+                }
+
               }
-              console.log(value);
-              if (!value){
-                return (
-                  <Button label="Publish" onClick={(e) => updateStatus(tableMeta.rowIndex ,tableMeta.tableData[tableMeta.rowIndex].okl, from_state, to_state, updateState)}>
-                    <PublishIcon label="Publish"></PublishIcon>
-                  </Button>)
-              } else if(value == "publish") {
-                return (
-                  <Button label="Done" onClick={(e) => updateStatus(tableMeta.rowIndex ,tableMeta.tableData[tableMeta.rowIndex].okl, from_state, to_state, updateState)}>
-                    <PublishedWithChangesIcon label="Done"></PublishedWithChangesIcon>
-                  </Button>)
-              } else {
-                return (<Button><DoneIcon></DoneIcon></Button>)
-              }
+              
               
             }
           }
@@ -271,7 +284,6 @@ import {
           <CustomSearchRender
             searchText={searchText? searchText : ''}
             onSearch={handleSearch}
-            
             onHide={hideSearch}
             options={options}
             onClick={customFilter}
@@ -301,12 +313,11 @@ import {
             options={options} 
             />
           </LocalizationProvider>
-          <NotificationContainer />
+          
       </Box> )
   }
 
-export default function SalesApp(props)  {
-
+export default function SalesApp({createNotif})  {
   const [print, setPrint] = useState(false);
   const [id, setId] = useState("");
   
@@ -324,7 +335,9 @@ export default function SalesApp(props)  {
     return (<GridSale 
               page={0} 
               total={10} 
-              onprint={printSales}>
+              onprint={printSales}
+              onMsg={createNotif}
+              >
               </GridSale>
             )
   } else{

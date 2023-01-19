@@ -25,8 +25,7 @@ export const withAuth = (Component) => {
     const AuthenticatedComponent  = props => {
         const router = useRouter();
         const [data, setData] = useState();
-        const tes = {...props}
-        console.log(tes);
+        
         useEffect(() => {
             const getUser = async () => {
                 const userData = localStorage.getItem('user');

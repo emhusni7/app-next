@@ -14,6 +14,12 @@
             "cancel_approval": true,
             "cancel_approved": false
         },
+        "so_approval_akses": {
+            "to_publish": true,
+            "to_done": true,
+            "to_cancel_publish": true,
+            "to_cancel_done": true
+        },
         "so_state": [
             "", 
             "publish",
