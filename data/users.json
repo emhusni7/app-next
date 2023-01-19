@@ -3,11 +3,17 @@
         "id": 1,
         "username": "it",
         "password": "saya",
+        "user_approve": "Husni",
         "menu": [
             {"name": "sales", "label": "SO   Contract"},
             {"name": "poApp", "label": "PO Approval"}
-    ],
-        "state": [null, "to_approve", "approved"],
+        ],
+        "state": [null, "to_approve","cancel","approved"], 
+        "po_approval_akses": {
+            "to_approval": true,
+            "cancel_approval": true,
+            "cancel_approved": false
+        },
         "so_state": [
             "", 
             "publish",
@@ -18,11 +24,17 @@
         "id": 2,
         "username": "adi",
         "password": "saya",
-        "menu": [{"name": "sales", "label": "Sales Contract"}],
+        "user_approve": "Adi Surya",
+        "menu": [{"name": "sales", "label": "Sales Contract"},{"name": "poApp", "label": "PO Approval"}],
         "state": [
             "to_approve",
             "approved"
         ],
+        "po_approval_akses": {
+            "approved": true,
+            "cancel_approval": true,
+            "cancel_approved": true
+        },
         "so_state": ["publish","done"]
     }
 ]

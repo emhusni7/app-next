@@ -1,4 +1,5 @@
 import { pool } from "../../src/models/db";
+import dayjs from 'dayjs';
 
 export default async (req, res) => {
     if (req.body.search){
@@ -30,7 +31,7 @@ export default async (req, res) => {
         }
     } else if (req.body.updateState){
         try {
-            const result = await getUpdateState(req.body.id, req.body.state)
+            const result = await getUpdateState(req.body.id, req.body.state, req.body.user)
             return res.status(200).json(result);
         } catch (error) {
             return res.status(405).json({error}).end();
@@ -46,7 +47,7 @@ const getListPo = async (params) => {
         s.name,
         coalesce(NULLIF(o.state, ''), 'none')
     from oms o
-    inner join sub s on s.sub = o.sub 
+    inner join sub s on s.sub = o.sub and o.oms like 'POS%'
     where close = 0 ${params}
     order by o.date desc  limit 5`;
     const result = await pool.query(query);
@@ -70,17 +71,17 @@ async function getAppPO(queryStr, page, rowpage) {
             (case 
                 when oms.state = 'to_approve'
             then 'to_approve'
-                when oms.state = 'approve'
-            then 'approve'
+                when oms.state = 'approved'
+            then 'approved'
             else 'none' end) as action,
             (case 
                 when oms.state = 'to_approve'
             then 'to_approve'
-                when oms.state = 'approve'
-            then 'approve'
+                when oms.state = 'approved'
+            then 'approved'
             else 'none' end) as state
         FROM oms
-        INNER JOIN sub s ON s.sub = oms.sub
+        INNER JOIN sub s ON s.sub = oms.sub and oms like 'POS%'
         ${queryStr} 
         limit ${rowpage}
         offset ${offsets}
@@ -95,19 +96,20 @@ async function getAppPO(queryStr, page, rowpage) {
     };
 }
 
-async function getUpdateState(id, tostate){
+async function getUpdateState(id, tostate, user){
+    const dtime = dayjs().format('YYYY-MM-DD HH:mm:ss');
     let query, result;
     switch (tostate) {
         case 'approved':
-            query = `update oms set state = '${tostate}', aprov=1 where oms = '${id}'`
+            query = `update oms set state = '${tostate}', aprov=1, aprov_time='${dtime}', aprovby='${user}' where oms = '${id}'`
             result = await pool.query(query);
             return {id: id, state: 'approved'}
         case 'to_approve':
-            query = `update oms set state = '${tostate}', aprov=0 where oms = '${id}'`
+            query = `update oms set state = '${tostate}', aprov=0, aprov_time='${dtime}', aprovby='${user}' where oms = '${id}'`
             result = await pool.query(query);
             return {id: id, state: 'to_approve'}
         case 'cancel':
-            query = `update oms set state = '${tostate}', aprov=0 where oms = '${id}'`
+            query = `update oms set state = '${tostate}', aprov=0, aprov_time='${dtime}', aprovby='${user}' where oms = '${id}'`
             result = await pool.query(query);
             return {id: id, state: 'cancel'}
         default:
@@ -128,17 +130,17 @@ async function getAppPoSearch(searchQuery, page, rowpage){
             (case 
                 when oms.state = 'to_approve'
             then 'to_approve'
-                when oms.state = 'approve'
-            then 'approve'
+                when oms.state = 'approved'
+            then 'approved'
             else 'none' end) as action,
             (case 
                 when oms.state = 'to_approve'
             then 'to_approve'
-                when oms.state = 'approve'
-            then 'approve'
+                when oms.state = 'approved'
+            then 'approved'
             else 'none' end) as state
         FROM oms
-        INNER JOIN sub s ON s.sub = oms.sub 
+        INNER JOIN sub s ON s.sub = oms.sub and oms like 'POS%'
         ${searchQuery}
         ORDER BY oms.date DESC
         limit ${rowpage}

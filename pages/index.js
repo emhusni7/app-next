@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import Layout from "../src/components/Layout";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardMedia from '@mui/material/CardMedia';
@@ -8,6 +7,7 @@ import styles from '../styles/Home.module.css';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {CustomizedProgressBars} from '../src/components/Layout/loader';
+
 
 
 export default function Index() {
@@ -27,9 +27,9 @@ export default function Index() {
     
     return (
         <section>
-            <Grid justifyContent="center" alignItems="center" container spacing={2} minHeight={160}>
-                {loading ? (<CustomizedProgressBars ></CustomizedProgressBars>): ''}
-                {menus.map((value, index) =>                         (<Card className={styles.card} sx={{ maxWidth: 85 }}>
+            
+            {loading ? (<div style={{ justifyContent:'center', margin: '20px',spacing: '2', alignItems:'center'}}><CustomizedProgressBars /></div>) : (<Grid justifyContent="center" alignItems="center" container spacing={2} minHeight={160}>
+                {menus.map((value, index) => (<Card className={styles.card} sx={{ maxWidth: 85 }}>
                             <CardMedia
                                 component="img"
                                 height="120"
@@ -42,6 +42,7 @@ export default function Index() {
                         </Card>)
                 )}
                 
-            </Grid>
+            </Grid>)}
+            
         </section>)
 }

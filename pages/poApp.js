@@ -4,13 +4,11 @@ import {
     Button,
     MenuItem
   } from '@mui/material';
-  import Layout from "../src/components/Layout";
   import dayjs from 'dayjs';
   import React, { useEffect, useState } from 'react';
   import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers';
   import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
   import {CustomizedProgressBars} from '../src/components/Layout/loader';
-  import {NotificationContainer, NotificationManager} from 'react-notifications';
   import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
   import { purchaseObj } from './api/pos';
   import styles from "../styles/apr.module.css";
@@ -25,7 +23,7 @@ import {
   import ViewPdf from './viewerPdf';
 
 
- function GridPO({page, total, onprint}){
+ function GridPO({page, total, onprint, onMsg}){
     
     const [tbpage, setPage] = useState(page);
     const [rowpages, setRowPage] = useState(10);
@@ -92,6 +90,7 @@ import {
   }
   
   const updateStatePos = async (rowIndex ,id, state, updateValue) => {
+
     await setTimeout( async () => {
       const res = await fetch('/api/pos',{
         method: 'POST',
@@ -101,11 +100,12 @@ import {
         body: JSON.stringify({
             'updateState': true,
             'id': id,
-            'state': state
+            'state': state,
+            'user': userObj.user_approve
         })
       });
       const res2 = await res.json();
-      if (res2){
+      if (!res2.error){
         updateValue(res2.state);
         let items = [...data];
         let item = {
@@ -115,6 +115,9 @@ import {
         }
         items[rowIndex] = item;
         setData(items);
+        onMsg('success','Data has been Update', 'Success')
+      } else{
+        onMsg('Error',res2.error.message, 'Error')
       }
   });
 }
@@ -242,79 +245,62 @@ import {
               sort: false,
               setCellHeaderProps: () => ({ align: 'left' }),
               customBodyRender: (value, tableMeta, updateValue) => {
-                if (!userObj.state){
-                  if (value === 'none' || value === 'cancel') {
+                if (userObj.po_approval_akses){
                     return (
                       <div>
-                      <Button title='To Approval'>
-                        <CheckOutlinedIcon variant="contained" title="To Approval" onClick={() => {
-                          updateStatePos(tableMeta.rowIndex, tableMeta.rowData[0], 'to_approve', updateValue);
-                        }}>
-                        </CheckOutlinedIcon>
-                      </Button>
-                      <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
-                        <LocalPrintshopRoundedIcon sx={{'color': 'black'}}></LocalPrintshopRoundedIcon>
-                      </Button>
+                        { 
+                        // akses to approval
+                        
+                          userObj.po_approval_akses.to_approval && (value == "none" || value == 'cancel') ?
+                            (<Button title='To Approval'>
+                            <CheckOutlinedIcon variant="contained" title="To Approval" onClick={() => {
+                              updateStatePos(tableMeta.rowIndex, tableMeta.rowData[0], 'to_approve', updateValue);
+                            }}>
+                            </CheckOutlinedIcon>
+                          </Button>): ("")
+                        } 
+                        {
+                          // akses approved
+                          userObj.po_approval_akses.approved && value == 'to_approve' ? 
+                          (<Button title='Approved'>
+                          <DoneAllRoundedIcon variant="contained" title="Approved" onClick={() => {
+                            updateStatePos(tableMeta.rowIndex, tableMeta.rowData[0], 'approved', updateValue);
+                          }}>
+                          </DoneAllRoundedIcon>
+                        </Button>): ("")
+                        }
+                        {
+                          // akses cancel
+                          userObj.po_approval_akses.cancel_approval && value == "to_approve" ?
+                          (<Button  title='Cancel'>
+                          <CancelOutlinedIcon sx={{'color':'red'}} variant="contained" title="Cancel" onClick={() => {
+                            updateStatePos(tableMeta.rowIndex, tableMeta.rowData[0], 'cancel', updateValue);
+                          }}>
+                          </CancelOutlinedIcon>
+                        </Button>): ("")
+                        }
+                        {
+                          // akses cancel
+                          userObj.po_approval_akses.cancel_approved && value == "approved" ?
+                          (<Button  title='Cancel'>
+                          <CancelOutlinedIcon sx={{'color':'red'}} variant="contained" title="Cancel" onClick={() => {
+                            updateStatePos(tableMeta.rowIndex, tableMeta.rowData[0], 'cancel', updateValue);
+                          }}>
+                          </CancelOutlinedIcon>
+                        </Button>): ("")
+                        }
+                        
+                          <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
+                            <LocalPrintshopRoundedIcon sx={{'color': 'black'}}></LocalPrintshopRoundedIcon>
+                          </Button>
                       </div>
                     );
-                  } else if (value === 'to_approve'){
-                    return (
-                        <div>
-                          <Button title='Cancel'>
-                            <CancelOutlinedIcon sx={{color: 'red'}} variant="contained" title="Cancel" onClick={() => {
-                              updateStatePos(tableMeta.rowIndex, tableMeta.rowData[0], 'cancel', updateValue);
-                            }}>
-                            </CancelOutlinedIcon>
-                          </Button>
-                          <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
-                            <LocalPrintshopRoundedIcon sx={{'color': 'black'}} ></LocalPrintshopRoundedIcon>
-                          </Button>
-                        </div>
-                      )
-                    } else{
-                      return (
-                      <div>
-                        
-                        <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
-                          <LocalPrintshopRoundedIcon sx={{'color': 'black'}} ></LocalPrintshopRoundedIcon>
-                        </Button>
-                      </div>)
-                    }
-                } else{
-                  // direksi approved
-                  if (value === 'to_approve'){
-                    return (<div>
-                      <Button title='To Approval'>
-                        <DoneAllRoundedIcon variant="contained" title="Approved" onClick={() => {
-                          updateStatePos(tableMeta.rowIndex, tableMeta.rowData[0], 'approved', updateValue);
-                        }}>
-                        </DoneAllRoundedIcon>
-                      </Button>
-                      <Button title='Cancel'>
-                        <CancelOutlinedIcon sx={{color: 'red'}} variant="contained" title="Cancel" onClick={() => {
-                          updateStatePos(tableMeta.rowIndex, tableMeta.rowData[0], 'cancel', updateValue);
-                        }}>
-                        </CancelOutlinedIcon>
-                      </Button>
-                      <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
-                        <LocalPrintshopRoundedIcon sx={{'color': 'black'}} ></LocalPrintshopRoundedIcon>
-                      </Button>
-                    </div>)
-                  } else {
-                    return (<div><Button title='Cancel'>
-                    <CancelOutlinedIcon sx={{color: 'red'}} variant="contained" title="Cancel" onClick={() => {
-                      updateStatePos(tableMeta.rowIndex, tableMeta.rowData[0], 'cancel', updateValue);
-                    }}>
-                    </CancelOutlinedIcon>
-                  </Button>
-                  <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
-                    <LocalPrintshopRoundedIcon sx={{'color': 'black'}} ></LocalPrintshopRoundedIcon>
-                  </Button></div>)
                   }
-                }
-                
+                else {
+                  return ("");
                 }
               }
+            }
           },
           {
             name: "state",
@@ -436,7 +422,7 @@ import {
       </Box> )
   }
 
-export default function POForm(props){
+export default function POForm({createNotif}){
   const [print, setPrint] = useState(false);
   const [id, setId] = useState("");
   const printPO = (newId) => {
@@ -449,16 +435,16 @@ export default function POForm(props){
   }
 
   if (!print){
-    return (<GridPO page={props.page} total={props.total} onprint={printPO}></GridPO>)
+    return (<GridPO page={0} total={10} onprint={printPO} onMsg={createNotif}></GridPO>)
   } else{
-    return (<ViewPdf id={id} report_type="po_approval" onBack={backMenu} />)
+    return (<ViewPdf id={id} report_type="pos_approval" onBack={backMenu} />)
   }
 }
 
-export async function getServerSideProps(){
-    return { props: { 
-        page: 0,
-        total: 10, 
-      }
-    }
-  }
+// export async function getServerSideProps(props){
+//     return { props: { 
+//         page: 0,
+//         total: 10, 
+//       }
+//     }
+//   }

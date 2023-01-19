@@ -322,8 +322,8 @@ export default function SalesApp(props)  {
 
   if (!print){
     return (<GridSale 
-              page={props.page} 
-              total={props.total} 
+              page={0} 
+              total={10} 
               onprint={printSales}>
               </GridSale>
             )
@@ -333,10 +333,4 @@ export default function SalesApp(props)  {
 
 }
 
-export async function getServerSideProps(){
-    return { props: { 
-        page: 0,
-        total: 10, 
-      }
-    }
-  }
+
