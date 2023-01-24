@@ -26,7 +26,7 @@ import {
     const [data, setData] = useState([]);
    
     const { isAuthenticated, user} = useAppContext();
-    const userObj = JSON.parse(user);
+    const userObj = user;
 
     const getApiSales = async (strQuery, page) => {
       setLoading(true);

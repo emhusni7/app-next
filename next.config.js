@@ -1,6 +1,13 @@
 const path = require('path');
+const withPWA = require('next-pwa');
 
-module.exports = {
+module.exports = withPWA({
+//  reactStrictMode:true,
+  pwa: {
+    dest: "public",
+    register: true,
+    skipWaiting: true
+  },
   webpack5: true,
   webpack: (config) => {
     
@@ -32,4 +39,4 @@ module.exports = {
   // images: {
   //   domains: ['reqres.in'],
   // },
-}
+});

@@ -5,7 +5,7 @@
         "password": "saya",
         "user_approve": "Husni",
         "menu": [
-            {"name": "sales", "label": "SO   Contract"},
+            {"name": "sales", "label": "SO Contract"},
             {"name": "poApp", "label": "PO Approval"}
         ],
         "state": [null, "to_approve","cancel","approved"], 

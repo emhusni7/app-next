@@ -57,9 +57,6 @@ function LoginForm() {
         const response = await res.json();
         setSubmitting(false)
         if (res.status === 200){
-          const data = JSON.stringify(response)
-          localStorage.setItem("user", data);
-          localStorage.setItem("menu", JSON.stringify(response.menu))
           router.push('/');
         } else{
           setErrors({'password': response.message, 'username': ''})
@@ -118,10 +115,3 @@ function LoginForm() {
 
 export default LoginForm;
 
-// export async function getServerSideProps(context) {
-//   return {
-//     props: {
-//       csrfToken: await getCsrfToken(context),
-//     },
-//   }
-// }

@@ -73,12 +73,16 @@ async function getAppPO(queryStr, page, rowpage) {
             then 'to_approve'
                 when oms.state = 'approved'
             then 'approved'
+                when oms.state = 'cancel'
+            then 'cancel'
             else 'none' end) as action,
             (case 
                 when oms.state = 'to_approve'
             then 'to_approve'
                 when oms.state = 'approved'
             then 'approved'
+                when oms.state = 'cancel'
+            then 'cancel'
             else 'none' end) as state
         FROM oms
         INNER JOIN sub s ON s.sub = oms.sub and oms like 'POS%'
@@ -86,7 +90,6 @@ async function getAppPO(queryStr, page, rowpage) {
         limit ${rowpage}
         offset ${offsets}
         `
-    
     const result = await pool.query(query);
     const results = JSON.parse(JSON.stringify(result))
     return {
@@ -132,12 +135,16 @@ async function getAppPoSearch(searchQuery, page, rowpage){
             then 'to_approve'
                 when oms.state = 'approved'
             then 'approved'
+                when oms.state = 'cancel'
+            then 'cancel'
             else 'none' end) as action,
             (case 
                 when oms.state = 'to_approve'
             then 'to_approve'
                 when oms.state = 'approved'
             then 'approved'
+            when oms.state = 'cancel'
+                then 'cancel'
             else 'none' end) as state
         FROM oms
         INNER JOIN sub s ON s.sub = oms.sub and oms like 'POS%'

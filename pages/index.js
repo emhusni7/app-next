@@ -29,8 +29,10 @@ export default function Index() {
         <section>
             
             {loading ? (<div style={{ justifyContent:'center', margin: '20px',spacing: '2', alignItems:'center'}}><CustomizedProgressBars /></div>) : (<Grid justifyContent="center" alignItems="center" container spacing={2} minHeight={160}>
-                {menus.map((value, index) => (<Card className={styles.card} sx={{ maxWidth: 85 }}>
+                {menus.map((value, index) => (
+                <Card key={index} className={styles.card} sx={{ maxWidth: 85 }}>
                             <CardMedia
+                                key={index}
                                 component="img"
                                 height="120"
                                 image={`/static/${value.name}.png`}

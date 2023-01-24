@@ -33,7 +33,7 @@ import {
     const [appState, setApp] = useState(null);
 
     const { isAuthenticated, user} = useAppContext();
-    const userObj = JSON.parse(user);
+    const userObj = user;
 
     const getApiPos = async (strQuery, page) => {
       setLoading(true);

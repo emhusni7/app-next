@@ -1,0 +1,27 @@
+{
+    "theme_color": "#556cd6",
+    "background_color": "#fff",
+    "display": "browser",
+    "scope": "/",
+    "start_url": "/",
+    "name": "Next-PWA",
+    "short_name": "Next-PWA",
+    "description": "A Demo for Next-PWA",
+    "icons": [
+        {
+            "src": "/static/payment.png",
+            "sizes": "75x75",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/poApp.png",
+            "sizes": "75x75",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/sales.png",
+            "sizes": "75x75",
+            "type": "image/png"
+        }
+    ]
+  }

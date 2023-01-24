@@ -15,6 +15,8 @@ const SinglePagePDFViewer = dynamic(() => import("../src/components/Fields/pdfVi
   ssr: false
 });
 
+
+
 export default function ViewPdf(props) {
 
   const [file, setFile] = useState("");
@@ -57,6 +59,20 @@ export default function ViewPdf(props) {
     return blob;
 };
 
+function previewPdf(data64){
+  let blob = null;
+  blob = b64toBlob(data64, 'application/pdf;base64');
+  const blobURL = URL.createObjectURL(blob);
+  const theWindow = window.open(blobURL);
+  const theDoc = theWindow.document;
+  const theScript = document.createElement('script');
+  function injectThis() {
+      window.print();
+  }
+  theScript.innerHTML = `window.onload = ${injectThis.toString()};`;
+  theDoc.body.appendChild(theScript);
+}
+
   const printPreview = (data, type = 'application/pdf;base64') => {
     let blob = null;
     blob = b64toBlob(data, type);
@@ -67,7 +83,6 @@ export default function ViewPdf(props) {
     document.body.appendChild(a);
     a.click();
     a.remove();
-    
 };
 
   
@@ -102,7 +117,8 @@ export default function ViewPdf(props) {
             <Grid 
               container
               justifyContent="flex-end"
-              ><Button onClick={(e) => printPreview(file)}><CloudDownloadIcon /></Button>
+              ><Button onClick={(e) => previewPdf(file)}></Button>
+                <Button onClick={(e) => printPreview(file)}><CloudDownloadIcon /></Button>
               </Grid>
             <SinglePagePDFViewer pdf={file} /></>) : (<CustomizedProgressBars />)
           }

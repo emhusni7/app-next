@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { ArrowBackIosNewOutlined } from "@mui/icons-material";
 import LogoutIcon from '@mui/icons-material/Logout';
+import { deleteCookie } from "cookies-next";
 
 
 const Footer = () => {
@@ -129,8 +130,8 @@ function Layout({children}){
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={() => {
-              localStorage.removeItem("user");
-              localStorage.removeItem("menu");
+              deleteCookie('user');
+              deleteCookie('menu');
               router.push("/login")}}>
           <ListItemIcon  >
             <LogoutIcon fontSize="small" />
