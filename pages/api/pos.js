@@ -43,7 +43,8 @@ const getListPo = async (params) => {
     const query = `select 
         o.oms as title,
         o.cur,
-        o.val,
+        IF
+	( o.ppn = 1, F_getppn ( o.date ), 1 )),
         s.name,
         coalesce(NULLIF(o.state, ''), 'none')
     from oms o
@@ -67,7 +68,7 @@ async function getAppPO(queryStr, page, rowpage) {
             CAST(oms.date AS DATE) date,
             CONCAT("[",s.sub,"] ", s.name) supplier,
             oms.cur,
-            oms.val,
+            IF( oms.ppn = 1, F_getppn ( oms.date ), 1 )) val,
             (case 
                 when oms.state = 'to_approve'
             then 'to_approve'
