@@ -44,7 +44,17 @@ const getListPo = async (params) => {
         o.oms as title,
         o.cur,
         IF
-	( o.ppn = 1, F_getppn ( o.date ), 1 )),
+        (
+            SELECT
+                sum( omd.valpph22 ) - sum( omd.valpph23 ) + sum( omd.valpph42 ) AS total 
+            FROM
+                omd 
+            WHERE
+                omd.oms = $P{id} 
+                ) + oms.val + (
+                oms.ppn * oms.val *
+            IF
+            ( oms.ppn = 1, F_getppn ( oms.date ), 1 )) val,
         s.name,
         coalesce(NULLIF(o.state, ''), 'none')
     from oms o
@@ -68,7 +78,17 @@ async function getAppPO(queryStr, page, rowpage) {
             CAST(oms.date AS DATE) date,
             CONCAT("[",s.sub,"] ", s.name) supplier,
             oms.cur,
-            IF( oms.ppn = 1, F_getppn ( oms.date ), 1 )) val,
+            (
+                SELECT
+                    sum( omd.valpph22 ) - sum( omd.valpph23 ) + sum( omd.valpph42 ) AS total 
+                FROM
+                    omd 
+                WHERE
+                    omd.oms = $P{id} 
+                    ) + oms.val + (
+                    oms.ppn * oms.val *
+                IF
+                ( oms.ppn = 1, F_getppn ( oms.date ), 1 )) val,
             (case 
                 when oms.state = 'to_approve'
             then 'to_approve'
