@@ -108,11 +108,11 @@ async function getUpdateState(id, tostate, user){
             result = await pool.query(query);
             return {id: id, state: 'approved'}
         case 'to_approve':
-            query = `update oms set state = '${tostate}', aprov=0, aprov_time='${dtime}', aprovby='${user}' where oms = '${id}'`
+            query = `update oms set state = '${tostate}', aprov=0, aprov_time='${dtime}', aprovby='' where oms = '${id}'`
             result = await pool.query(query);
             return {id: id, state: 'to_approve'}
         case 'cancel':
-            query = `update oms set state = '${tostate}', aprov=0, aprov_time='${dtime}', aprovby='${user}' where oms = '${id}'`
+            query = `update oms set state = '${tostate}', aprov=0, aprov_time='${dtime}', aprovby='' where oms = '${id}'`
             result = await pool.query(query);
             return {id: id, state: 'cancel'}
         default:

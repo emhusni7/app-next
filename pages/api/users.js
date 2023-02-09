@@ -27,6 +27,6 @@ export default async (req, res) => {
             }
         }
     } catch (err){
-        res.status(500).send({ error: 'Failed to fetch data', message: 'Failed to fetch data' })
+        res.status(500).send({ error: 'Failed to fetch data', message: err.message })
     }   
 }
