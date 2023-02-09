@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { ArrowBackIosNewOutlined } from "@mui/icons-material";
 import LogoutIcon from '@mui/icons-material/Logout';
-import { deleteCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 
 
 const Footer = () => {
@@ -70,7 +70,7 @@ function Layout({children}){
   };
 
   React.useEffect(() => {
-    setUsername(JSON.parse(localStorage.getItem('user')).username.substring(0,1))
+    setUsername(JSON.parse(getCookie('user')).username.substring(0,1));
   },[username])
 
   return (

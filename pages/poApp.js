@@ -30,6 +30,7 @@ import {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [dateFilter, setDate] = useState(null);
+    const [dateFilterTo, setDateTo] = useState(null);
     const [appState, setApp] = useState(null);
 
     const { isAuthenticated, user} = useAppContext();
@@ -83,7 +84,12 @@ import {
 
       if(dateFilter) {
         const dateF = format(dateFilter.$d,"yyyy-MM-dd");
-        strQuery += ` and DATE(oms.date) = '${dateF}'`
+        strQuery += ` and DATE(oms.date) >= '${dateF}'`
+      }
+
+      if(dateFilterTo){
+        const dateTo = format(dateFilterTo.$d,"yyyy-MM-dd");
+        strQuery += ` and DATE(oms.date) <= '${dateTo}'`
       }
 
       await getApiPos(strQuery, page);
@@ -183,10 +189,11 @@ import {
             },
             display: (filterList, onChange, index, type) => {
               return (
+                <>
                 <DesktopDatePicker
-                  id="date"
-                  name="date"
-                  label="Date"
+                  id="from_date"
+                  name="from_date"
+                  label="From Date"
                   inputFormat="DD/MM/YYYY"
                   value={dateFilter}
                   style={{ width: '100%'}}
@@ -200,7 +207,26 @@ import {
                       name="d_date"
                       style={{ width: '100%'}}
                       />}
-                />
+                /> - 
+                <DesktopDatePicker
+                  id="to_date"
+                  name="to_date"
+                  label="To Date"
+                  inputFormat="DD/MM/YYYY"
+                  value={dateFilterTo}
+                  style={{ width: '100%'}}
+                  onChange={(val) => {
+                    setDateTo(val);
+                  }}
+                  renderInput={(params) =>
+                    <TextField {...params}
+                      size="small"
+                      id="d_date"
+                      name="d_date"
+                      style={{ width: '100%'}}
+                      />}
+              />
+                </>
               );
             }
           }
@@ -370,7 +396,9 @@ import {
             <Button variant="outlined" sx={{ marginLeft: '4px'}} onClick={() => {
               setApp(null);
               setDate(null);
+              setDateTo(null);
               setPage(0);
+              customFilter();
             } }>Clear</Button>
           </div>
         );

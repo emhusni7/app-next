@@ -10,7 +10,7 @@ export default async (req, res) => {
             const obj = req.body;
             let result;
             const query = `select * from usr where user = '${obj.username}' and pswd = '${obj.password}' limit 1`;
-            result = await pool.query(query) 
+            result = await pool.query(query)
             result = JSON.parse(JSON.stringify(result))
             if (result.length >=1 ){
                 const data = usersData.find(el => el.username === obj.username)

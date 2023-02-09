@@ -7,7 +7,7 @@ import {
   FormHelperText,
   Button
 } from '@mui/material';
-import Layout from "../src/components/Layout/layout";
+
 import { useFormik } from 'formik';
 import dayjs from 'dayjs';
 import React, { useEffect } from 'react';
@@ -224,13 +224,13 @@ export default function Payment({ res_data }) {
     )
 }
 
-Payment.getLayout = function getLayout(page) {
-    return (
-      <Layout>
-        {page}
-      </Layout>
-    )
-}
+// Payment.getLayout = function getLayout(page) {
+//     return (
+//       <Layout>
+//         {page}
+//       </Layout>
+//     )
+// }
 
 export async function getServerSideProps(){
   // const { URL } = process.env;

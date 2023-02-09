@@ -7,6 +7,7 @@ import styles from '../styles/Home.module.css';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {CustomizedProgressBars} from '../src/components/Layout/loader';
+import { getCookie } from "cookies-next";
 
 
 
@@ -15,7 +16,7 @@ export default function Index() {
     const [loading, setLoading] = useState(false);
     const [menus, setMenu] = useState([]);
     useEffect(() => {
-        const access = eval(localStorage.getItem('menu'));
+        const access = eval(getCookie('menu'));
         setMenu(access);
         () => {}
     }, [])
@@ -30,11 +31,11 @@ export default function Index() {
             
             {loading ? (<div style={{ justifyContent:'center', margin: '20px',spacing: '2', alignItems:'center'}}><CustomizedProgressBars /></div>) : (<Grid justifyContent="center" alignItems="center" container spacing={2} minHeight={160}>
                 {menus.map((value, index) => (
-                <Card key={index} className={styles.card} sx={{ maxWidth: 85 }}>
+                <Card key={index} className={styles.card} sx={{ maxWidth: 120 }}>
                             <CardMedia
                                 key={index}
                                 component="img"
-                                height="120"
+                                height="100"
                                 image={`/static/${value.name}.png`}
                                 alt={value.label}
                             />
