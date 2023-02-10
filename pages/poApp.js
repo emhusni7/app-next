@@ -351,7 +351,7 @@ import {
               filterOptions: {
                 fullWidth: true,
                 display: (filterList, index ) => {  
-                  const optionValues = ['to_approve','approve']
+                  const optionValues = ['to_approve','approved']
                   return (
                     <TextField
                       select
@@ -364,7 +364,7 @@ import {
                     >
                       {optionValues.map(item => (
                         <MenuItem key={item} value={item}>
-                          {item == 'to_approve' ? 'To Approve' : 'Approve'}
+                          {item == 'to_approve' ? 'To Approve' : 'Approved'}
                         </MenuItem>
                       ))}
                     </TextField>
