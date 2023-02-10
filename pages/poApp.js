@@ -26,6 +26,7 @@ import {
  function GridPO({page, total, onprint, onMsg}){
     
     const [tbpage, setPage] = useState(page);
+    const [tot, setTot] = useState(total);
     const [rowpages, setRowPage] = useState(10);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
@@ -53,10 +54,13 @@ import {
           })
         });
         const newData = await res.json();
+        console.log(newData);
         // set Format date JS
-        const rec_data = newData.map((item) => {
+        const rec_data = newData.data.map((item) => {
           return {...item, 'date': dayjs(item.date).format("DD-MM-YYYY")}
         })
+        
+        setTot(newData.total[0].total);
         setData(rec_data);
         setLoading(false);
       },1000);
@@ -375,7 +379,7 @@ import {
     
     const options = {
       selectableRows: 'none',
-      count: 100,
+      count: tot,
       page: tbpage,
       // filterType: "multiselect",
       serverSide: true,

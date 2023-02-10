@@ -41,6 +41,7 @@ export default async (req, res) => {
 
 const getListPo = async (params) => {
     const query = `select 
+        SQL_CALC_FOUND_ROWS
         o.oms as title,
         o.cur,
         (
@@ -73,6 +74,7 @@ async function getAppPO(queryStr, page, rowpage) {
     const offsets = rowpage * page;    
     const query = `
         SELECT 
+            SQL_CALC_FOUND_ROWS
             oms.oms,
             CAST(oms.date AS DATE) date,
             CONCAT("[",s.sub,"] ", s.name) supplier,
@@ -112,8 +114,11 @@ async function getAppPO(queryStr, page, rowpage) {
         `
     const result = await pool.query(query);
     const results = JSON.parse(JSON.stringify(result))
+    const resTotal = ` select FOUND_ROWS()`;
+    const total = await pool.query(resTotal);
+    console.log(total);
     return {
-        total: 100,
+        total: total,
         page: 0,
         data: results
     };
@@ -145,6 +150,7 @@ async function getAppPoSearch(searchQuery, page, rowpage){
     const offsets = rowpage * page;
     const query = `
         SELECT 
+            SQL_CALC_FOUND_ROWS
             oms.oms,
             CAST(oms.date AS DATE) date,
             CONCAT("[",s.sub,"] ", s.name) supplier,
@@ -184,5 +190,10 @@ async function getAppPoSearch(searchQuery, page, rowpage){
         offset ${offsets}
         `
     const result = await pool.query(query);
-    return result;
+    const query2 = `select FOUND_ROWS() as total`;
+    const jmlRow = await pool.query(query2);
+    return {
+        data: result,
+        total: jmlRow,
+    };
 }
