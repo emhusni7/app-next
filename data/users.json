@@ -31,7 +31,7 @@
         "username": "adi",
         "password": "saya",
         "user_approve": "Adi Surya",
-        "menu": [{"name": "sales", "label": "Sales Contract"},{"name": "poApp", "label": "PO Approval"}],
+        "menu": [{"name": "sales", "label": "SO Contract"},{"name": "poApp", "label": "PO Approval"}],
         "state": [
             "to_approve",
             "approved"
