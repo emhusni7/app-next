@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "HOST=web-apps.bb next start",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
