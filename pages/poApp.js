@@ -54,7 +54,6 @@ import {
           })
         });
         const newData = await res.json();
-        console.log(newData);
         // set Format date JS
         const rec_data = newData.data.map((item) => {
           return {...item, 'date': dayjs(item.date).format("DD-MM-YYYY")}
@@ -397,12 +396,12 @@ import {
             <Button variant="contained" onClick={() => {
               customFilter()
             } }>Search</Button>
-            <Button variant="outlined" sx={{ marginLeft: '4px'}} onClick={() => {
+            <Button variant="outlined" sx={{ marginLeft: '4px'}} onClick={async () => {
               setApp(null);
               setDate(null);
               setDateTo(null);
               setPage(0);
-              customFilter();
+              await getApiPos(strQuery, 0);
             } }>Clear</Button>
           </div>
         );
