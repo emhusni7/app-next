@@ -25,10 +25,11 @@ const getSales = async (params, page, rowpage) => {
     const offsets = rowpage * page;    
     const query = `
         select 
+            SQL_CALC_FOUND_ROWS
             so.okl,
             c.name,
             c.address,
-            date_format(so.date,'%d/%m/%Y') so_date,
+            CAST(so.date AS DATE) so_date,
             so.nopoc,
             coalesce(nullif(so.asal,'-'),'-') asal,
             coalesce(nullif(so.tujuan,'-'),'-') tujuan,
@@ -41,11 +42,15 @@ const getSales = async (params, page, rowpage) => {
     order by so.date desc 
     limit ${rowpage}
     offset ${offsets}`
+    
     const result = await pool.query(query);
-    const results = JSON.parse(JSON.stringify(result))
+    const query2 = `select FOUND_ROWS() as total`;
+    const jmlRow = await pool.query(query2);
+    const resJml = JSON.parse(JSON.stringify(jmlRow))
+    const total = resJml[0].total;
     return {
-        total: 100,
+        total: total,
         page: page,
-        data: results
+        data: result
     };
 }

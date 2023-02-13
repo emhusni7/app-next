@@ -16,12 +16,13 @@ import {
   import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
   import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
   import ViewPdf from './viewerPdf';
+  import dayjs from 'dayjs';
   
 
-  function GridSale({page, total, onprint, onMsg}){
-    console.log(onMsg);
+  function GridSale({page, rowPage, onprint, onMsg}){
     const [tbpage, setPage] = useState(page);
-    const [rowpages, setRowPage] = useState(total);
+    const [rowpages, setRowPage] = useState(rowPage);
+    const [tot, setTotal] = useState(0)
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
    
@@ -44,8 +45,13 @@ import {
           })
         });
         const newData = await res.json();
-        setData(newData.data);
-        setLoading(false);
+        const rec_data = newData.data.map((item) => {
+          return {...item, 'so_date': dayjs(item.so_date).format("DD/MM/YYYY")}
+        })
+       
+       setTotal(newData.total);
+       setData(rec_data);
+       setLoading(false);
       },1000);
     }
 
@@ -95,7 +101,7 @@ import {
     if (rowpages){
       customFilter('',page);
     }
-    () => {}},[rowpages, tbpage, page])
+    () => {}},[ rowpages, tbpage, page])
 
     // https://codesandbox.io/s/github/gregnb/mui-datatables
     
@@ -242,7 +248,7 @@ import {
     
     const options = {
       selectableRows: 'none',
-      count: 100,
+      count: tot,
       page: tbpage,
       serverSide: true,
       rowsPerPage: rowpages,
@@ -334,7 +340,7 @@ export default function SalesApp({createNotif})  {
   if (!print){
     return (<GridSale 
               page={0} 
-              total={10} 
+              rowPage={10} 
               onprint={printSales}
               onMsg={createNotif}
               >

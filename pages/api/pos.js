@@ -161,7 +161,7 @@ async function getAppPoSearch(searchQuery, page, rowpage){
                 FROM
                     omd 
                 WHERE
-                    omd.oms = 'POS-2302-000033' 
+                    omd.oms = oms.oms 
                     ) +
                         oms.val + (oms.ppn * oms.val *
                 IF
