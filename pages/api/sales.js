@@ -1,4 +1,3 @@
-import { id } from "date-fns/locale";
 import { pool } from "../../src/models/db";
 
 export default async (req,res) => {
