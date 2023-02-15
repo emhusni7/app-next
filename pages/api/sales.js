@@ -38,7 +38,7 @@ const getSales = async (params, page, rowpage) => {
             so.state action
     from okl so
         inner join sub c on c.sub = so.sub 
-        ${params}
+        ${params} and so.okl like 'SOE%'
     order by so.date desc 
     limit ${rowpage}
     offset ${offsets}`

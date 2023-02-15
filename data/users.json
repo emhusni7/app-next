@@ -42,6 +42,24 @@
             "cancel_approved": true
         },
         "so_state": ["publish","done"]
-        
+    },
+    {
+        "id": 3,
+        "username": "casbb",
+        "password": "saya",
+        "user_approve": "Cas BB",
+        "menu": [
+            {"name": "sales", "label": "SO Contract"}
+            ],
+        "so_approval_akses": {
+            "to_publish": true,
+            "to_done": true,
+            "to_cancel_publish": true,
+            "to_cancel_done": true
+        },
+        "so_state": [
+            "publish",
+            "done"
+        ]
     }
 ]
