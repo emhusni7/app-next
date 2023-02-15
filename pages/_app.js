@@ -8,18 +8,6 @@ import { useRouter } from 'next/router';
 import NotifApp from '../src/components/Fields/notification';
 
 
-
-const NotFoundPage = () => {
-  return (
-    <>
-      <div>
-        <h1>404 - Page Not Found</h1>
-        <p>Sorry, there is nothing to see here</p>
-      </div>
-    </>
-  );
-};
-
 export default function MyApp({ Component, pageProps}) {
   const router = useRouter();
   const staticPage = router.pathname.startsWith('/login');
