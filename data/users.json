@@ -52,15 +52,30 @@
         "menu": [
             {"name": "sales", "label": "SO Contract"}
             ],
-        "so_approval_akses": {
-            "to_publish": true,
-            "to_done": true,
-            "to_cancel_publish": true,
-            "to_cancel_done": true
-        },
+            "so_approval_akses": {
+                "to_done": true,
+                "to_cancel_done": true
+            },
         "so_state": [
             "publish",
             "done"
         ]
+    },
+    {
+        "id": 4,
+        "username": "reny",
+        "password": "saya",
+        "user_approve": "Reny",
+        "menu": [
+            {"name": "poApp", "label": "PO Approval"}],
+        "state": [
+            "",
+            "to_approve",
+            "approved"
+        ],
+        "po_approval_akses": {
+            "to_approval": true,
+            "cancel_approval": true       
+        }
     }
 ]
