@@ -23,13 +23,13 @@ import {
   import ViewPdf from './viewerPdf';
 
 
- function GridPO({page, total, onprint, onMsg}){
+ function GridPO({page, total, onprint, onMsg, tempData, setTempData}){
     
     const [tbpage, setPage] = useState(page);
     const [tot, setTot] = useState(total);
     const [rowpages, setRowPage] = useState(10);
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(tempData);
     const [dateFilter, setDate] = useState(null);
     const [dateFilterTo, setDateTo] = useState(null);
     const [appState, setApp] = useState(null);
@@ -132,9 +132,9 @@ import {
 }
 
   useEffect(() => {
-    if (rowpages){
-      customFilter();
-    }
+      if(data?.length == 0){
+        customFilter();
+      } 
     () => {}},[rowpages, tbpage, page])
 
     // https://codesandbox.io/s/github/gregnb/mui-datatables
@@ -262,7 +262,7 @@ import {
              filter: false,
              sort: false,
              customBodyRender: (value, tableMeta, updateValue) => {
-              return value.toLocaleString("en-US", {minimumFractionDigits: 2})
+              return value && value.toLocaleString("en-US", {minimumFractionDigits: 2})
              }
             },
            },
@@ -319,7 +319,9 @@ import {
                         </Button>): ("")
                         }
                         
-                          <Button onClick={(e) => onprint(tableMeta.tableData[tableMeta.rowIndex][0])}>
+                          <Button onClick={(e) => { 
+                            setTempData(data);
+                            onprint(tableMeta.tableData[tableMeta.rowIndex][0])}}>
                             <LocalPrintshopRoundedIcon sx={{'color': 'black'}}></LocalPrintshopRoundedIcon>
                           </Button>
                       </div>
@@ -401,7 +403,7 @@ import {
               setDate(null);
               setDateTo(null);
               setPage(0);
-              await getApiPos(strQuery, 0);
+              await getApiPos("", 0);
             } }>Clear</Button>
           </div>
         );
@@ -456,6 +458,8 @@ import {
 export default function POForm({createNotif}){
   const [print, setPrint] = useState(false);
   const [id, setId] = useState("");
+  const [tempData, setTempData] = useState([]);
+
   const printPO = (newId) => {
     setPrint(true);
     setId(newId);
@@ -466,7 +470,7 @@ export default function POForm({createNotif}){
   }
 
   if (!print){
-    return (<GridPO page={0} total={10} onprint={printPO} onMsg={createNotif}></GridPO>)
+    return (<GridPO page={0} total={10} tempData={tempData} setTempData={setTempData} onprint={printPO} onMsg={createNotif}></GridPO>)
   } else{
     return (<ViewPdf id={id} report_type="pos_approval" onBack={backMenu} />)
   }
