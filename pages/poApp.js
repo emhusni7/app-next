@@ -94,7 +94,7 @@ import {
         const dateTo = format(dateFilterTo.$d,"yyyy-MM-dd");
         strQuery += ` and DATE(oms.date) <= '${dateTo}'`
       }
-
+      
       await getApiPos(strQuery, page);
   }
   
@@ -134,8 +134,9 @@ import {
   useEffect(() => {
       if(data?.length == 0){
         customFilter();
-      } 
-    () => {}},[rowpages, tbpage, page])
+      }
+    () => {}},[rowpages,tbpage,page])
+
 
     // https://codesandbox.io/s/github/gregnb/mui-datatables
     
@@ -321,7 +322,7 @@ import {
                         
                           <Button onClick={(e) => { 
                             setTempData(data);
-                            onprint(tableMeta.tableData[tableMeta.rowIndex][0])}}>
+                            onprint(tableMeta.tableData[tableMeta.rowIndex][0], tot, tbpage, rowpages)}}>
                             <LocalPrintshopRoundedIcon sx={{'color': 'black'}}></LocalPrintshopRoundedIcon>
                           </Button>
                       </div>
@@ -386,9 +387,11 @@ import {
       serverSide: true,
       rowsPerPage: rowpages,
       onChangeRowsPerPage: (numberOfRows) => {
+        setData([]);
         setRowPage(numberOfRows);
       },
       onChangePage: (currentPage) => {
+        setData([]);
         setPage(currentPage);
       },
       // Calling the applyNewFilters parameter applies the selected filters to the table 
@@ -457,12 +460,16 @@ import {
 
 export default function POForm({createNotif}){
   const [print, setPrint] = useState(false);
+  const [tot, setTotal] = useState(0);
+  const [page, setPage] = useState(0);
   const [id, setId] = useState("");
   const [tempData, setTempData] = useState([]);
 
-  const printPO = (newId) => {
+  const printPO = (newId, totale, pages) => {
     setPrint(true);
     setId(newId);
+    setTotal(totale);
+    setPage(pages);
   }
   const backMenu = () => {
     setId("");
@@ -470,7 +477,7 @@ export default function POForm({createNotif}){
   }
 
   if (!print){
-    return (<GridPO page={0} total={10} tempData={tempData} setTempData={setTempData} onprint={printPO} onMsg={createNotif}></GridPO>)
+    return (<GridPO page={page} total={tot} tempData={tempData} setTempData={setTempData} onprint={printPO} onMsg={createNotif}></GridPO>)
   } else{
     return (<ViewPdf id={id} report_type="pos_approval" onBack={backMenu} />)
   }

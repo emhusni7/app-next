@@ -8,7 +8,7 @@
             {"name": "sales", "label": "SO Contract"},
             {"name": "poApp", "label": "PO Approval"}
         ],
-        "state": [null, "to_approve","cancel","approved"], 
+        "state": [" ", "to_approve","cancel","approved"], 
         "po_approval_akses": {
             "to_approval": true,
             "cancel_approval": true,
