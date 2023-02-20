@@ -9,6 +9,10 @@
     "description": "A Demo for Next-PWA",
     "icons": [
         {
+            "src": "favicon.ico",
+            "sizes": "95x95"
+        },
+        {
             "src": "/static/payment.png",
             "sizes": "95x95",
             "type": "image/png"

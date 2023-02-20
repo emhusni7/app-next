@@ -22,12 +22,9 @@ import {
   import { useAppContext } from '../src/models/withAuthorization';
   import ViewPdf from './viewerPdf';
 
-
- function GridPO({page, total, onprint, onMsg, tempData, setTempData}){
+ //page={page} setTotal={setTotal} setPage={setPage} setRowData={setRowData} rowcount={rowData} total={tot} tempData={tempData} setTempData={setTempData} onprint={printPO} onMsg={createNotif}
+ function GridPO({page, setTotal, setPage, setRowData, rowcount, total, onprint, onMsg, tempData, setTempData}){
     
-    const [tbpage, setPage] = useState(page);
-    const [tot, setTot] = useState(total);
-    const [rowpages, setRowPage] = useState(10);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(tempData);
     const [dateFilter, setDate] = useState(null);
@@ -49,18 +46,22 @@ import {
           body: JSON.stringify({
               'appSearch': true,
               'searchQuery': strQuery,
-              'page': tbpage,
-              'rowpage': rowpages
+              'page': page,
+              'rowpage': rowcount
           })
         });
         const newData = await res.json();
         // set Format date JS
-        const rec_data = newData.data.map((item) => {
-          return {...item, 'date': dayjs(item.date).format("DD-MM-YYYY")}
-        })
+        console.log(newData);
+        if (newData){
+          const rec_data = newData.data.map((item) => {
+            return {...item, 'date': dayjs(item.date).format("DD-MM-YYYY")}
+          })
+          
+          setTotal(newData.total[0].total);
+          setData(rec_data);  
+        }
         
-        setTot(newData.total[0].total);
-        setData(rec_data);
         setLoading(false);
       },1000);
 
@@ -135,7 +136,7 @@ import {
       if(data?.length == 0){
         customFilter();
       }
-    () => {}},[rowpages,tbpage,page])
+    () => {}},[rowcount,page,page])
 
 
     // https://codesandbox.io/s/github/gregnb/mui-datatables
@@ -322,7 +323,7 @@ import {
                         
                           <Button onClick={(e) => { 
                             setTempData(data);
-                            onprint(tableMeta.tableData[tableMeta.rowIndex][0], tot, tbpage, rowpages)}}>
+                            onprint(tableMeta.tableData[tableMeta.rowIndex][0], total, page, rowcount)}}>
                             <LocalPrintshopRoundedIcon sx={{'color': 'black'}}></LocalPrintshopRoundedIcon>
                           </Button>
                       </div>
@@ -381,14 +382,14 @@ import {
     
     const options = {
       selectableRows: 'none',
-      count: tot,
-      page: tbpage,
+      count: total,
+      page: page,
       // filterType: "multiselect",
       serverSide: true,
-      rowsPerPage: rowpages,
+      rowsPerPage: rowcount,
       onChangeRowsPerPage: (numberOfRows) => {
         setData([]);
-        setRowPage(numberOfRows);
+        setRowData(numberOfRows);
       },
       onChangePage: (currentPage) => {
         setData([]);
@@ -406,7 +407,10 @@ import {
               setDate(null);
               setDateTo(null);
               setPage(0);
-              await getApiPos("", 0);
+              const params = userObj.state.map(x => `'${x}'`);
+              const newparams = params.join(",");
+              const strQuery = ` WHERE oms.state in (${newparams})`;
+              await getApiPos(strQuery, 0);
             } }>Clear</Button>
           </div>
         );
@@ -464,12 +468,14 @@ export default function POForm({createNotif}){
   const [page, setPage] = useState(0);
   const [id, setId] = useState("");
   const [tempData, setTempData] = useState([]);
+  const [rowData, setRowData] = useState(10);
 
-  const printPO = (newId, totale, pages) => {
+  const printPO = (newId, totale, pages, rowcount) => {
     setPrint(true);
     setId(newId);
     setTotal(totale);
     setPage(pages);
+    setRowData(rowcount);
   }
   const backMenu = () => {
     setId("");
@@ -477,7 +483,7 @@ export default function POForm({createNotif}){
   }
 
   if (!print){
-    return (<GridPO page={page} total={tot} tempData={tempData} setTempData={setTempData} onprint={printPO} onMsg={createNotif}></GridPO>)
+    return (<GridPO page={page} setTotal={setTotal} setPage={setPage} setRowData={setRowData} rowcount={rowData} total={tot} tempData={tempData} setTempData={setTempData} onprint={printPO} onMsg={createNotif}></GridPO>)
   } else{
     return (<ViewPdf id={id} report_type="pos_approval" onBack={backMenu} />)
   }

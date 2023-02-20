@@ -79,7 +79,7 @@ async function getAppPO(queryStr, page, rowpage) {
             CAST(oms.date AS DATE) date,
             CONCAT("[",s.sub,"] ", s.name) supplier,
             oms.cur,
-            (
+            round((
                 SELECT
                     sum( omd.valpph22 ) - sum( omd.valpph23 ) + sum( omd.valpph42 ) AS total 
                 FROM
@@ -89,7 +89,7 @@ async function getAppPO(queryStr, page, rowpage) {
                     ) +
                         oms.val + (oms.ppn * oms.val *
                 IF
-                ( oms.ppn = 1, F_getppn ( oms.date ), 1 )) val,
+                ( oms.ppn = 1, F_getppn ( oms.date ), 1 )),2) val,
             (case 
                 when oms.state = 'to_approve'
             then 'to_approve'
@@ -155,7 +155,7 @@ async function getAppPoSearch(searchQuery, page, rowpage){
             CAST(oms.date AS DATE) date,
             CONCAT("[",s.sub,"] ", s.name) supplier,
             oms.cur,
-            (
+            round ((
                 SELECT
                     sum( omd.valpph22 ) - sum( omd.valpph23 ) + sum( omd.valpph42 ) AS total 
                 FROM
@@ -165,7 +165,7 @@ async function getAppPoSearch(searchQuery, page, rowpage){
                     ) +
                         oms.val + (oms.ppn * oms.val *
                 IF
-                ( oms.ppn = 1, F_getppn ( oms.date ), 1 )) val,
+                ( oms.ppn = 1, F_getppn ( oms.date ), 1 )),2) val,
             (case 
                 when oms.state = 'to_approve'
             then 'to_approve'

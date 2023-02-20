@@ -77,5 +77,23 @@
             "to_approval": true,
             "cancel_approval": true       
         }
+    },
+    {
+        "id": 5,
+        "username": "yohanes",
+        "password": "saya",
+        "user_approve": "Yohanes",
+        "menu": [{"name": "sales", "label": "SO Contract"},
+            {"name": "poApp", "label": "PO Approval"}],
+        "state": [
+            "to_approve",
+            "approved"
+        ],
+        "po_approval_akses": {
+            "approved": true,
+            "cancel_approval": true,
+            "cancel_approved": true
+        },
+        "so_state": ["publish","done"]
     }
 ]
