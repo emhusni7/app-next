@@ -52,7 +52,6 @@ import {
         });
         const newData = await res.json();
         // set Format date JS
-        console.log(newData);
         if (newData){
           const rec_data = newData.data.map((item) => {
             return {...item, 'date': dayjs(item.date).format("DD-MM-YYYY")}

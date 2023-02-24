@@ -1,17 +1,28 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 
 // Create a theme instance.
 const theme = createTheme({
-  overrides: {
-    MuiIconButton: {
-      root: {
-        '&:hover': {
-          backgroundColor: "white"
+      components: {
+      MUIDataTableFilterList: {
+        styleOverrides: { 
+          chip: {
+            display: 'none'
+          }
         }
       }
-    }
-  },
+    },
+  
+  // overrides: {
+    
+  //   MuiIconButton: {
+  //     root: {
+  //       '&:hover': {
+  //         backgroundColor: "white"
+  //       }
+  //     }
+  //   }
+  // },
   palette: {
     background:{
       paper: '#fff',

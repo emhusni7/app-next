@@ -18,3 +18,12 @@
   text-align: center;
   font-weight: bolder;
 }
+
+.w3tag{background-color:#000;color:#fff;display:inline-block;padding-left:8px;padding-right:8px;text-align:center}
+
+.w3roundsmall{border-radius:2px}.w3round,.w3roundmedium{border-radius:4px}.w3roundlarge{border-radius:8px}.w3roundxlarge{border-radius:16px}.w3roundxxlarge{border-radius:32px}
+.w3blue,.w3hoverblue:hover{color:#fff!important;background-color:#2196F3!important}
+.w3green,.w3hovergreen:hover{color:#fff!important;background-color:#4CAF50!important}
+.w3red,.w3hoverred:hover{color:#fff!important;background-color:#f44336!important}
+.w3border{border:1px solid #ccc!important}
+.w3borderwhite,.w3hoverborderwhite:hover{border-color:#fff!important}

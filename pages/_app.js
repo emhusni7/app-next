@@ -7,7 +7,15 @@ import Layout from "../src/components/Layout";
 import { useRouter } from 'next/router';
 import NotifApp from '../src/components/Fields/notification';
 
-
+const getMuiTheme = () => createTheme({
+  overrides: {
+    MUIDataTableFilterList: {
+      chip: {
+        display: 'none'
+      }
+    }
+  }
+})
 export default function MyApp({ Component, pageProps}) {
   const router = useRouter();
   const staticPage = router.pathname.startsWith('/login');
@@ -19,6 +27,7 @@ export default function MyApp({ Component, pageProps}) {
 
   return (
   <ThemeProvider theme={theme}>
+    
     <CssBaseline />
     <Layout>
       <NotifApp>

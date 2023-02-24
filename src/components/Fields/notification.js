@@ -15,7 +15,7 @@ export default function NotifApp({children}){
           return NotificationManager.warning(message, title, 3000);
           break;
         case 'error':
-          return NotificationManager.error(message, title,5000);
+          return NotificationManager.error(message, title, 1000);
           break;
       }
   }

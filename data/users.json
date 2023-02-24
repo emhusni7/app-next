@@ -6,7 +6,8 @@
         "user_approve": "Husni",
         "menu": [
             {"name": "sales", "label": "SO Contract"},
-            {"name": "poApp", "label": "PO Approval"}
+            {"name": "poApp", "label": "PO Approval"},
+            {"name": "prq", "label": "PR Approval"}
         ],
         "state": [" ", "to_approve","cancel","approved"], 
         "po_approval_akses": {
