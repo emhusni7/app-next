@@ -10,8 +10,7 @@ export default async (req,res) => {
         } else if (req.body.updateState){
             result = await setStatePrq(req.body.id, req.body.state, req.body.user)
         }
-        return res.status(200).json(result
-            );
+        return res.status(200).json(result);
     } catch (error) {   
         return res.status(405).json({error}).end();
     } 
@@ -77,7 +76,7 @@ const setStatePrq = async (id, state, user) => {
                 result = await pool.query(query);
                 return {id: id, state: 'approved'}
             case 'cancel':
-                query = `update prq set aprov=0, aprov1=0, apdate='${strdate}', chtime='${strdate}', chusr='${user}', categ_id="" where prq = '${id}'`
+                query = `update prq set aprov=0, aprov1=0, apdate='${strdate}', chtime='${strdate}', chusr='${user}', categ_id='' where prq = '${id}'`
                 result = await pool.query(query);
                 return {id: id, state: 'cancel'}
             default:

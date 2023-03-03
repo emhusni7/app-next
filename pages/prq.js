@@ -59,7 +59,7 @@ import { stat } from 'fs';
         const item = {
           ...items[action.rowIndex],
           action: 'Ápproved',
-          state: 'Approved'
+          statee: 'Approved'
         }
         items[action.rowIndex] = item;
         return {...state, items: items}
@@ -67,7 +67,7 @@ import { stat } from 'fs';
         const itemcancel = {
           ...items[action.rowIndex],
           action: 'Cancel',
-          state: 'Cancel'
+          statee: 'Cancel'
         }
         items[action.rowIndex] = itemcancel;
         return {...state, items: items}
@@ -347,6 +347,7 @@ import { stat } from 'fs';
                       return createNotif('error',res.error.message, 'Error')
                     } else {
                       if (res.state === "approved"){
+                        updateValue("Approved");
                         dispatch({type: 'SET_APPROVED', rowIndex: tableMeta.rowIndex})
                         return createNotif('success', 'Data Has Been Update', 'Success')
                       } 
