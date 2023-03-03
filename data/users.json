@@ -33,7 +33,9 @@
         "password": "saya",
         "user_approve": "Adi Surya",
         "menu": [{"name": "sales", "label": "SO Contract"},
-            {"name": "poApp", "label": "PO Approval"}],
+            {"name": "poApp", "label": "PO Approval"},
+            {"name": "prq", "label": "PR Approval"}
+        ],
         "state": [
             "to_approve",
             "approved"
@@ -85,7 +87,9 @@
         "password": "saya",
         "user_approve": "Yohanes",
         "menu": [{"name": "sales", "label": "SO Contract"},
-            {"name": "poApp", "label": "PO Approval"}],
+            {"name": "poApp", "label": "PO Approval"},
+            {"name": "prq", "label": "PR Approval"}
+        ],
         "state": [
             "to_approve",
             "approved"
