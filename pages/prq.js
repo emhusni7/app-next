@@ -5,7 +5,7 @@ import {
     MenuItem
   } from '@mui/material';
   import dayjs from 'dayjs';
-  import React, { useEffect, useState, useMemo } from 'react';
+  import React, { useEffect, useState, useMemo, useCallback } from 'react';
   import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers';
   import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
   import {CustomizedProgressBars} from '../src/components/Layout/loader';
@@ -28,6 +28,7 @@ import {
   import Paper from '@mui/material/Paper';
   import { useReducer } from 'react';
 import { width } from '@mui/system';
+import { stat } from 'fs';
 
   const initialState = {
     loading: false,
@@ -76,10 +77,12 @@ import { width } from '@mui/system';
           return {...state, filter_date_to: action.filter_date_to}
       case 'FILTER_STATE':
         return {...state, filter_state: action.filter_state}
+      case 'FILTER_TEXT':
+        return {...state, filter_text: action.filter_text}
       case 'SET_FILTER':
         return {...state, filter: true}
       case 'SET_CLEAR':
-        return {...state, filter_date_from: "", filter_date_to: "", filter_state: "", filter: false}
+        return {...state, filter_date_from: "", filter_date_to: "", filter_state: "", filter: false, filter_text: ""}
       default:
         return state;
 
@@ -90,6 +93,7 @@ import { width } from '@mui/system';
 
     const [state, dispatch] = useReducer(reducer, initialState)
     const { isAuthenticated, user} = useAppContext();
+    const [strQuery, setQuery] = useState("");
     const userObj = user;
 
     const updateState = async(id, status, username) => {
@@ -120,12 +124,11 @@ import { width } from '@mui/system';
             body: JSON.stringify({
                 'appSearch': true,
                 'searchQuery': strQuery,
-                'page': state.page,
+                'page': page,
                 'rowpage': state.rowcount
             })
           });
           const newData = await res.json();
-          console.log(newData);
           // set Format date JS
           if (newData){
             let rec_data = []; 
@@ -155,53 +158,72 @@ import { width } from '@mui/system';
           <div>
             <TextField 
               label="Search"
-              placeholder={'Search PO / Supplier'}
+              placeholder={'Search PRQ'}
               size="small"
               type="search"
               variant='standard'
               value={props.searchText}
-              
               style={{ width: '75%'}}
               onChange={(e) => {
                 if (!e.target.value){
-                  
-                  customSearch("");
+                  dispatch({'type': 'SET_CLEAR'});
+                  props.onSearch(e.target.value);
+                  props.onClose()
                 }
-                props.onSearch(e.target.value);
+                props.onSearch(e.target.value)
               }}/>
               <Button >
-               <SearchOutlinedIcon sx={{ mt: 2}} onClick={(e) => {props.onClick(props.searchText)}}></SearchOutlinedIcon>
+               <SearchOutlinedIcon sx={{ mt: 2}} onClick={(e) => {
+                dispatch({'type': 'FILTER_TEXT', filter_text: props.searchText})
+                props.onClick()
+               }}></SearchOutlinedIcon>
               </Button>
               
             </div>
             )
       }
 
-    const customSearch = async (strQuery) => {
-        await getApiPrQ(strQuery,state.page)
+    const customSearch = async (strQuery, page) => {
+        await getApiPrQ(strQuery,page)
     }
 
     const filterSearch = async () => {
-      let strQuery = ""
+      customSearch(strQuery,0);
+    }
+
+    // fn callback
+    function useCallBackc(callback) {
+      useEffect(() => {
+        callback(); // performing action after state has updated
+      }, [callback]);
+    }
+    
+    const generateStr = () => {
+      let tempQuery = "";
       if (state.filter_date_from){
-        strQuery += ` and DATE(prq.date) >= '${state.filter_date_from}'`
+        tempQuery += ` and DATE(prq.date) >= '${state.filter_date_from}'`
       } 
 
       if (state.filter_date_to){
-        strQuery += ` and DATE(prq.date) <= '${state.filter_date_to}'`
+        tempQuery += ` and DATE(prq.date) <= '${state.filter_date_to}'`
       }
-
-      if (state.filter_state === "To Approve"){
-        strQuery += `and (prq.aprov is null or prq.aprov = 0) `
-      } else if (state.filter_state === "Approved"){
-        strQuery += `and prq.aprov = 1`
-      }
-
-      customSearch(strQuery);
       
+      if (state.filter_state === "To Approve"){
+        tempQuery += `and (prq.aprov is null or prq.aprov = 0) `
+      } else if (state.filter_state === "Approved"){
+        tempQuery += `and prq.aprov = 1`
+      }
+      setQuery(tempQuery);
     }
-    
-    useMemo(() => filterSearch(), [state.rowcount, state.page, state.filter]);
+
+    useMemo(() => generateStr(), [state.filter_date_from, state.filter_date_to, state.filter_state, state.filter_text])
+    useMemo(() => filterSearch(), [state.page, state.rowcount]);
+
+    // call state useEffect tes
+    const cSearch = useCallback(() =>{ 
+      console.log(strQuery)
+      customSearch(strQuery,0);
+    }, [strQuery]);
 
     //useMemo(() => filterSearch(), [state.filter])
 
@@ -455,14 +477,17 @@ import { width } from '@mui/system';
         customFilterDialogFooter: (currentFilterList, applyNewFilters) => {
           return (
             <div style={{ marginTop: '40px' }}>
-              <Button variant="contained" onClick={() => {
-               applyNewFilters();
-               dispatch({type: 'SET_FILTER'});
+              <Button variant="contained" onClick={async () => {
+                applyNewFilters();
+                dispatch({type: 'SET_FILTER'});
+                cSearch();
+                dispatch({type: 'SET_CLEAR'});
               }
               }>Apply Filters</Button>
               <Button variant="outlined" sx={{ marginLeft: '4px'}} onClick={() => {
                 applyNewFilters();
                 dispatch({type: 'SET_CLEAR'});
+                cSearch();
             } }>Clear</Button>
             </div>
           );
@@ -492,14 +517,18 @@ import { width } from '@mui/system';
           
         },
         customSearchRender: (searchText, handleSearch, hideSearch, options) => {
-          const text = !!searchText ? `and prq.prq like '%${searchText}%'` : 'and true'
+          
+         
           return (
             <CustomSearchRender
               searchText={searchText? searchText : ''}
               onSearch={handleSearch}
               onHide={hideSearch}
               options={options}
-              onClick={() => {customSearch(text)}}
+              onClose={() => {customSearch("",0)}}
+              onClick={() => { 
+                  customSearch(`and prq.prq like '%${searchText}%'`,0)
+                }}
             />
           )}
       };

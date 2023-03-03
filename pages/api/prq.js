@@ -20,6 +20,7 @@ export default async (req,res) => {
 
 const getPrQ = async (params, page, rowpage) => {
     try {
+        console.log(page);
         const offsets = rowpage * page;
         const query = `
         select 
@@ -41,7 +42,7 @@ const getPrQ = async (params, page, rowpage) => {
             ) using utf8 ) as data
             from prq 
         left outer join prd on prq.prq = prd.prq
-        where aprov1 = 1 ${params}
+        where aprov1 = 1 ${params} and prq.categ_id is not null and prq.categ_id != ""
         and prq.delete != 1 
         GROUP BY prq.prq, prq.date,
             prq.cct,
@@ -72,12 +73,11 @@ const setStatePrq = async (id, state, user) => {
     try {
         switch (state) {
             case 'approved':
-                query = `update prq set aprov=1, aprov1=1, apdate='${strdate}', chtime='${strdate}', chusr='${user}' where prq = '${id}'`
-                console.log(query)
+                query = `update prq set aprov=1, aprov1=1, apdate='${strdate}', chtime='${strdate}', chusr='${user}', categ_id = 'Approved' where prq = '${id}'`
                 result = await pool.query(query);
                 return {id: id, state: 'approved'}
             case 'cancel':
-                query = `update prq set aprov=0, aprov1=0, apdate='${strdate}', chtime='${strdate}', chusr='${user}' where prq = '${id}'`
+                query = `update prq set aprov=0, aprov1=0, apdate='${strdate}', chtime='${strdate}', chusr='${user}', categ_id="" where prq = '${id}'`
                 result = await pool.query(query);
                 return {id: id, state: 'cancel'}
             default:

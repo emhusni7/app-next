@@ -10,14 +10,32 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           {/* PWA primary color */}
+          <meta name="application-name" content="CAS App" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta name="apple-mobile-web-app-title" content="CAS App" />
+          <meta name="description" content="CAS App" />
+          <meta name="format-detection" content="telephone=no" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+          <meta name="msapplication-TileColor" content="#2B5797" />
+          <meta name="msapplication-tap-highlight" content="no" />
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <link rel="shortcut icon" href="favicon.ico" />
+          <link rel="shortcut icon" href="/favicon.ico" />
+          <link rel="manifest" href="/manifest.json" />
           <link rel="icon" type="image/x-icon" href="favicon.ico" />
           <meta name="theme-color" content="#fff" />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="Cas App" />
+          <meta property="og:description" content="Best PWA App in the world" />
+          <meta property="og:site_name" content="CAS App" />
+          <meta property="og:url" content="http://localhost:3000" />
+          <meta property="og:image" content="https://yourdomain.com/icons/apple-touch-icon.png" />
+          <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover' />
           {/* Inject MUI styles first to match with the prepend: true configuration. */}
           {this.props.emotionStyleTags}
         </Head>
