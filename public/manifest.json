@@ -1,12 +1,12 @@
 {
-    "theme_color": "#556cd6",
-    "background_color": "#fff",
-    "display": "standalone",
-    "scope": "/",
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF",
     "start_url": "/",
-    "name": "app-next",
-    "short_name": "app-next",
-    "description": "A Demo for Next-PWA",
+    "display": "standalone",
+    "orientation": "portrait",
+    "name": "Web App",
+    "short_name": "App",
+    "sw": "/public/sw.js",
     "icons": [
         {
             "src": "favicon.ico",
