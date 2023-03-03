@@ -1,8 +1,8 @@
 {
     "theme_color": "#556cd6",
     "background_color": "#fff",
-    "display": "browser",
-    "scope": "/",
+    "display": "standalone",
+    "scope": ".",
     "start_url": "/",
     "name": "app-next",
     "short_name": "app-next",
@@ -10,21 +10,21 @@
     "icons": [
         {
             "src": "favicon.ico",
-            "sizes": "95x95"
+            "sizes": "226x227"
         },
         {
             "src": "/static/payment.png",
-            "sizes": "95x95",
+            "sizes": "900x900",
             "type": "image/png"
         },
         {
             "src": "/static/poApp.png",
-            "sizes": "95x95",
+            "sizes": "512x512",
             "type": "image/png"
         },
         {
             "src": "/static/sales.png",
-            "sizes": "95x95",
+            "sizes": "512x512",
             "type": "image/png"
         }
     ]
