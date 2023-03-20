@@ -6,9 +6,9 @@ export default async (req,res) => {
         let result;
         console.log(req.body.query);
         if (req.body.appSearch){
-            result = await getPrQ(req.body.searchQuery, req.body.page, req.body.rowpage);
+            result = await getPrj(req.body.searchQuery, req.body.page, req.body.rowpage);
         } else if (req.body.updateState){
-            result = await setStatePrq(req.body.id, req.body.state, req.body.user)
+            result = await setStatePrj(req.body.id, req.body.state, req.body.user)
         }
         return res.status(200).json(result);
     } catch (error) {   
@@ -17,38 +17,33 @@ export default async (req,res) => {
 }
 
 
-const getPrQ = async (params, page, rowpage) => {
+const getPrj = async (params, page, rowpage) => {
     try {
-        console.log(params)
         const offsets = rowpage * page;
         const query = `
         select 
-            SQL_CALC_FOUND_ROWS
-            prq.prq,
-            prq.date,
-            prq.cct request,
-            prq.remark ket,
-            prq.aprov1,
-            prq.aprov,
-            (case 
-                when prq.aprov1 = 1 and prq.aprov = 0
-                    then 'To Approve'
-                when prq.aprov = 1
-                    then 'Approved'
-                else 'New' end) as statee,
-            convert(group_concat(
-                CONCAT("[",prd.inv,"] ", prd.remark),"-|",prd.dateneed,"-|",prd.qty,"-|",prd.unit SEPARATOR '-;'
+		SQL_CALC_FOUND_ROWS
+            rma.rma,
+            rma.date,
+            rma.sub request,
+            rma.remark ket,
+            rma.aprov,
+						case 
+						when rma.aprov = 1 then "Approved"
+						else "To Approve" end statee,
+						convert(group_concat(
+                CONCAT("[",rmb.inv,"] ", rmb.remark),"-|",rmb.qty,"-|",rmb.unit SEPARATOR '-;'
             ) using utf8 ) as data
-            from prq 
-        left outer join prd on prq.prq = prd.prq
-        where aprov1 = 1 ${params} and prq.categ_id is not null and prq.categ_id != ""
-        and prq.delete != 1 
-        GROUP BY prq.prq, prq.date,
-            prq.cct,
-            prq.remark,
-            prq.aprov1,
-            prq.aprov
-        order by prq.date DESC, prq.prq ASC 
+            
+				from rma 
+				inner join rmb on rma.rma = rmb.rma
+				where rma.group_ = 2 and rma.delete = 0 ${params} and (rma.sub is not null)
+				GROUP BY rma.rma,
+            rma.date,
+            rma.sub,
+            rma.remark,
+            rma.aprov
+				order by rma.date desc, rma.rma asc
         limit ${rowpage}
         offset ${offsets}`
         const result = await pool.query(query);
@@ -66,17 +61,17 @@ const getPrQ = async (params, page, rowpage) => {
     }
 }
 
-const setStatePrq = async (id, state, user) => {
+const setStatePrj = async (id, state, user) => {
     const strdate = dayjs().format('DD/MM/YYYY HH:mm');
     let query, result;
     try {
         switch (state) {
             case 'approved':
-                query = `update prq set aprov=1, aprov1=1, apdate='${strdate}', chtime='${strdate}', chusr='${user}', categ_id = 'Approved' where prq = '${id}'`
+                query = `update rma set aprov=1, chtime='${strdate}', chusr='${user}' where rma = '${id}'`
                 result = await pool.query(query);
                 return {id: id, state: 'approved'}
             case 'cancel':
-                query = `update prq set aprov=0, aprov1=0, apdate='${strdate}', chtime='${strdate}', chusr='${user}', categ_id='' where prq = '${id}'`
+                query = `update rma set aprov=0, chtime='${strdate}', chusr='${user}' where rma = '${id}'`
                 result = await pool.query(query);
                 return {id: id, state: 'cancel'}
             default:

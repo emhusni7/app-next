@@ -7,7 +7,10 @@
         "menu": [
             {"name": "sales", "label": "SO Contract"},
             {"name": "poApp", "label": "PO Approval"},
-            {"name": "prq", "label": "PR Approval"}
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"},
+            {"name": "bcin", "label": "BC In"},
+            {"name": "bcout", "label": "BC Out"}
         ],
         "state": [" ", "to_approve","cancel","approved"], 
         "po_approval_akses": {
@@ -32,7 +35,8 @@
         "username": "adi",
         "password": "saya",
         "user_approve": "Adi Surya",
-        "menu": [{"name": "sales", "label": "SO Contract"},
+        "menu": [
+            {"name": "sales", "label": "SO Contract"},
             {"name": "poApp", "label": "PO Approval"},
             {"name": "prq", "label": "PR Approval"}
         ],
@@ -79,7 +83,8 @@
         "po_approval_akses": {
             "to_approval": true,
             "cancel_approval": true       
-        }
+        },
+        "filter_dep": ["PCH-NR"]
     },
     {
         "id": 5,
@@ -88,7 +93,8 @@
         "user_approve": "Yohanes",
         "menu": [{"name": "sales", "label": "SO Contract"},
             {"name": "poApp", "label": "PO Approval"},
-            {"name": "prq", "label": "PR Approval"}
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"}
         ],
         "state": [
             "to_approve",
@@ -100,5 +106,84 @@
             "cancel_approved": true
         },
         "so_state": ["publish","done"]
+    },
+    {
+        "id": 6,
+        "username": "arifin",
+        "user_approve": "Arifin",
+        "menu": [
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"}
+        ],
+        "filter_dep": ["WHS"]
+    },{
+        "id": 7,
+        "username": "jalil",
+        "user_approve": "Jalil",
+        "menu": [
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"}
+        ],
+        "filter_dep": ["PPIC"]
+    },
+    {
+        "id": 8,
+        "username": "aisyah",
+        "user_approve": "Aisyah",
+        "menu": [
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"}
+        ],
+        "filter_dep": ["ACCOUNTING","CUSTOMS"]
+    },
+    {
+        "id": 9,
+        "username": "dono",
+        "user_approve": "Dono",
+        "menu": [
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"}
+        ],
+        "filter_dep": ["HRD","HSE","SECURITY","CIVIL","GA"]
+    },
+    {
+        "id": 10,
+        "username": "alif",
+        "user_approve": "Alif",
+        "menu": [
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"}
+        ],
+        "filter_dep": ["QA","QSD","SPEC","LAB"]
+    },
+    {
+        "id": 11,
+        "username": "yoseph",
+        "user_approve": "Yoseph",
+        "menu": [
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"}
+        ],
+        "filter_dep": ["MARKETING"]
+    },
+    {
+        "id": 12,
+        "username": "jessie",
+        "user_approve": "Jessie",
+        "menu": [
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"}
+        ],
+        "filter_dep": ["EXIM"]
+    },
+    {
+        "id": 13,
+        "username": "bruno",
+        "user_approve": "Abah Bruno",
+        "menu": [
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"}
+        ],
+        "filter_dep": ["IT"]
     }
 ]

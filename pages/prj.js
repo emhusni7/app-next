@@ -66,8 +66,8 @@ import { stat } from 'fs';
       case 'SET_CANCEL':
         const itemcancel = {
           ...items[action.rowIndex],
-          action: 'Cancel',
-          statee: 'Cancel'
+          action: 'To Approve',
+          statee: 'To Approve'
         }
         items[action.rowIndex] = itemcancel;
         return {...state, items: items}
@@ -89,7 +89,7 @@ import { stat } from 'fs';
     }
   } 
 
-  export default function GridPRQ({createNotif}){
+  export default function GridPRJ({createNotif}){
 
     const [state, dispatch] = useReducer(reducer, initialState)
     const { isAuthenticated, user} = useAppContext();
@@ -100,7 +100,7 @@ import { stat } from 'fs';
               // const newparams = params.join(",");
               // const strQuery = ` WHERE oms.state in (${newparams})`;
     const updateState = async(id, status, username) => {
-      const res = await fetch('/api/prq',{
+      const res = await fetch('/api/prj',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -116,10 +116,10 @@ import { stat } from 'fs';
       return result;
     }
 
-    const getApiPrQ = async (strQuery = "", page) => {
+    const getApiPrJ = async (strQuery = "", page) => {
         dispatch({type: 'ITEMS_REQUESTED'})
         setTimeout( async () => {
-          const res = await fetch('/api/prq',{
+          const res = await fetch('/api/prj',{
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -142,9 +142,8 @@ import { stat } from 'fs';
                   const itemArr = item.split("-|");
                   eldata.push([
                     itemArr[0],
-                    dayjs(itemArr[1]).format("DD-MM-YYYY"),
-                    itemArr[2],
-                    itemArr[3]
+                    itemArr[1],
+                    itemArr[2]
                   ])  
                 })
               }
@@ -161,7 +160,7 @@ import { stat } from 'fs';
           <div>
             <TextField 
               label="Search"
-              placeholder={'Search PRQ'}
+              placeholder={'Search PRJ'}
               size="small"
               type="search"
               variant='standard'
@@ -189,9 +188,9 @@ import { stat } from 'fs';
     const customSearch = async (strQuery, page) => {
       if (userObj.filter_dep){
         const newparams = userObj.filter_dep.map(x => `'${x}'`).join(',')
-        strQuery += ` and  prq.cct in (${newparams})`
+        strQuery += ` and  rma.sub in (${newparams})`
       }  
-      await getApiPrQ(strQuery,page)
+      await getApiPrJ(strQuery,page)
     }
 
     const filterSearch = async () => {
@@ -209,17 +208,17 @@ import { stat } from 'fs';
       let tempQuery = "";
 
       if (state.filter_date_from){
-        tempQuery += ` and DATE(prq.date) >= '${state.filter_date_from}'`
+        tempQuery += ` and DATE(rma.date) >= '${state.filter_date_from}'`
       } 
 
       if (state.filter_date_to){
-        tempQuery += ` and DATE(prq.date) <= '${state.filter_date_to}'`
+        tempQuery += ` and DATE(rma.date) <= '${state.filter_date_to}'`
       }
       
       if (state.filter_state === "To Approve"){
-        tempQuery += `and (prq.aprov is null or prq.aprov = 0) `
+        tempQuery += `and (rma.aprov is null or rma.aprov = 0) `
       } else if (state.filter_state === "Approved"){
-        tempQuery += `and prq.aprov = 1`
+        tempQuery += `and rma.aprov = 1`
       }
       setQuery(tempQuery);
     }
@@ -236,8 +235,8 @@ import { stat } from 'fs';
     //useMemo(() => filterSearch(), [state.filter])
 
     const columns = [{
-        name: "prq",
-        label: "No.PRQ",
+        name: "rma",
+        label: "No.PRJ",
         options: {
             filter: false,
             sort: true,
@@ -450,7 +449,7 @@ import { stat } from 'fs';
                 <TableHead>
                   <TableRow>
                     <TableCell>Nama</TableCell>
-                    <TableCell>Date</TableCell>
+                 
                     <TableCell align="right">Qty</TableCell>
                     <TableCell align="right">Unit</TableCell>
                   </TableRow>
@@ -462,9 +461,8 @@ import { stat } from 'fs';
                       <TableCell component="th" scope="row">
                         {row[0]}
                       </TableCell>
-                      <TableCell>{row[1]}</TableCell>
-                      <TableCell align="right">{parseFloat(row[2]).toLocaleString("en-US", {minimumFractionDigits: 2})}</TableCell>
-                      <TableCell>{row[3]}</TableCell>
+                      <TableCell align="right">{parseFloat(row[1]).toLocaleString("en-US", {minimumFractionDigits: 2})}</TableCell>
+                      <TableCell>{row[2]}</TableCell>
                       </TableRow>
                   ))
                   }
@@ -501,7 +499,7 @@ import { stat } from 'fs';
             </div>
           );
         },
-        searchPlaceholder: 'Type PRQ to Search',
+        searchPlaceholder: 'Type PRJ to Search',
         textLabels: {
           body: {
               noMatch: state.loading ?
@@ -536,7 +534,7 @@ import { stat } from 'fs';
               options={options}
               onClose={() => {customSearch("",0)}}
               onClick={() => { 
-                  customSearch(`and prq.prq like '%${searchText}%'`,0)
+                  customSearch(`and rma.rma like '%${searchText}%'`,0)
                 }}
             />
           )}
@@ -558,7 +556,7 @@ import { stat } from 'fs';
           <LocalizationProvider dateAdapter={AdapterDayjs}>
           <MUIDataTable 
             tableBodyHeight="auto"
-            title={"PRQ Approval"} 
+            title={"PRJ Approval"} 
             data={state.items} 
             columns={columns} 
             options={options} 
