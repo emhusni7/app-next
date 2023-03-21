@@ -194,7 +194,7 @@ import { stat } from 'fs';
     }
 
     const filterSearch = async () => {
-      customSearch(strQuery,0);
+      customSearch(strQuery,state.page);
     }
 
     // fn callback
