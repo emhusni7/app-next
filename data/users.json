@@ -124,7 +124,7 @@
             {"name": "prq", "label": "PR Approval"},
             {"name": "prj", "label": "PRJ App"}
         ],
-        "filter_dep": ["PPIC"]
+        "filter_dep": ["PPIC","PROD-FISH","PROD-CRAB"]
     },
     {
         "id": 8,
@@ -144,7 +144,7 @@
             {"name": "prq", "label": "PR Approval"},
             {"name": "prj", "label": "PRJ App"}
         ],
-        "filter_dep": ["HRD","HSE","SECURITY","CIVIL","GA"]
+        "filter_dep": ["HRD","HSE","SECURITY","CIVIL","GA","HK"]
     },
     {
         "id": 10,
@@ -185,5 +185,15 @@
             {"name": "prj", "label": "PRJ App"}
         ],
         "filter_dep": ["IT"]
+    },
+    {
+        "id": 14,
+        "username": "mubin",
+        "user_approve": "Mubin",
+        "menu": [
+            {"name": "prq", "label": "PR Approval"},
+            {"name": "prj", "label": "PRJ App"}
+        ],
+        "filter_dep": ["MEKANIK"]
     }
 ]
