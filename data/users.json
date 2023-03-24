@@ -144,7 +144,7 @@
             {"name": "prq", "label": "PR Approval"},
             {"name": "prj", "label": "PRJ App"}
         ],
-        "filter_dep": ["HRD","HSE","SECURITY","CIVIL","GA","HK"]
+        "filter_dep": ["HRD","HSE","SECURITY","CIVIL","GA","HK","KLINIK"]
     },
     {
         "id": 10,

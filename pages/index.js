@@ -6,8 +6,9 @@ import Button from '@mui/material/Button';
 import styles from '../styles/Home.module.css';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import {CustomizedProgressBars} from '../src/components/Layout/loader';
+import CircularProgressWithLabel from '../src/components/Layout/circularProgress';
 import { getCookie } from "cookies-next";
+import Box from '@mui/material/Box';
 
 
 
@@ -29,7 +30,7 @@ export default function Index() {
     return (
         <section>
             
-            {loading ? (<div style={{ justifyContent:'center', margin: '20px',spacing: '2', alignItems:'center'}}><CustomizedProgressBars /></div>) : (<Grid justifyContent="center" alignItems="center" container spacing={2} minHeight={160}>
+            {true ? (<Box sx={{ width: '100%', height:100, margin: '50px',spacing: '5', alignItems:'center'}}><CircularProgressWithLabel /></Box>) : (<Grid justifyContent="center" alignItems="center" container spacing={2} minHeight={160}>
                 {menus.map((value, index) => (
                 <Card key={index} className={styles.card} sx={{ maxWidth: 120 }}>
                             <CardMedia
