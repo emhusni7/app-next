@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
+import {CardActionArea} from "@mui/material";
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import styles from '../styles/Home.module.css';
@@ -30,9 +31,12 @@ export default function Index() {
     return (
         <section>
             
-            {loading ? (<Box sx={{ width: '100%', height:100, margin: '50px',spacing: '5', alignItems:'center'}}><CircularProgressWithLabel /></Box>) : (<Grid justifyContent="center" alignItems="center" container spacing={2} minHeight={160}>
+            {loading ? (<Box sx={{ width: '100%', height:100, margin: '50px',spacing: '5', alignItems:'center'}}><CircularProgressWithLabel /></Box>) : (<Grid justifyContent="center" alignItems="center" container sx={{ mt: 7}}  minHeight={160}>
                 {menus.map((value, index) => (
-                <Card key={index} className={styles.card} sx={{ maxWidth: 120 }}>
+                <Card key={index} className={styles.card} sx={{ width: 120 }}>
+                    <CardActionArea
+                    onClick={(e) => pageRoute(value.name)}
+                    >
                             <CardMedia
                                 key={index}
                                 component="img"
@@ -43,6 +47,7 @@ export default function Index() {
                                 <CardActions>
                                     <Button onClick={(e) => pageRoute(value.name)} size="small">{value.label}</Button>
                                 </CardActions>
+                                </CardActionArea>            
                         </Card>)
                 )}
                 
