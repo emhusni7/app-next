@@ -30,7 +30,7 @@ export default function Index() {
     return (
         <section>
             
-            {true ? (<Box sx={{ width: '100%', height:100, margin: '50px',spacing: '5', alignItems:'center'}}><CircularProgressWithLabel /></Box>) : (<Grid justifyContent="center" alignItems="center" container spacing={2} minHeight={160}>
+            {loading ? (<Box sx={{ width: '100%', height:100, margin: '50px',spacing: '5', alignItems:'center'}}><CircularProgressWithLabel /></Box>) : (<Grid justifyContent="center" alignItems="center" container spacing={2} minHeight={160}>
                 {menus.map((value, index) => (
                 <Card key={index} className={styles.card} sx={{ maxWidth: 120 }}>
                             <CardMedia
