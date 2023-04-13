@@ -144,7 +144,7 @@
             {"name": "prq", "label": "PR Approval"},
             {"name": "prj", "label": "PRJ App"}
         ],
-        "filter_dep": ["HRD","HSE","SECURITY","CIVIL","GA","HK","KLINIK","RND"]
+        "filter_dep": ["HRD","HSE","SECURITY","CIVIL","GA","HK","KLINIK"]
     },
     {
         "id": 10,
@@ -154,7 +154,7 @@
             {"name": "prq", "label": "PR Approval"},
             {"name": "prj", "label": "PRJ App"}
         ],
-        "filter_dep": ["QA","QSD","SPEC","LAB","QC-FISH","QC-CRAB"]
+        "filter_dep": ["QA","QSD","SPEC","LAB","QC-FISH","QC-CRAB","RND"]
     },
     {
         "id": 11,
