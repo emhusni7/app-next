@@ -46,6 +46,7 @@ const getPrj = async (params, page, rowpage) => {
 				order by rma.date desc, rma.rma asc
         limit ${rowpage}
         offset ${offsets}`
+        await pool.query(`SET SESSION group_concat_max_len = 1000000`);
         const result = await pool.query(query);
         const query2 = `select FOUND_ROWS() as total`;
         const jmlRow = await pool.query(query2);
